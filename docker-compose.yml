@@ -1,0 +1,113 @@
+services:
+  postgres-client:
+    image: postgres:16
+    container_name: postgres-client-db
+    environment:
+      POSTGRES_DB: client_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-client-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  postgres-account:
+    image: postgres:16
+    container_name: postgres-account-db
+    environment:
+      POSTGRES_DB: account_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres-account-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+
+  postgres-credit:
+    image: postgres:16
+    container_name: postgres-credit-db
+    environment:
+      POSTGRES_DB: credit_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres-credit-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+
+  client-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        JAR_FILE: client_processing/target/client_processing-*.jar
+    container_name: client-service
+    ports:
+      - "8081:8080"
+    environment:
+      - SERVER_PORT=8080
+      - DB_HOST=postgres-client
+      - DB_PORT=5432
+      - DB_NAME=client_db
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=password
+    depends_on:
+      postgres-client:
+        condition: service_healthy
+    restart: unless-stopped
+
+  account-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        JAR_FILE: account_processing/target/account_processing-*.jar
+    container_name: account-service
+    ports:
+      - "8082:8080"
+    environment:
+      - SERVER_PORT=8080
+      - DB_HOST=postgres-account
+      - DB_PORT=5432
+      - DB_NAME=account_db
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=password
+    depends_on:
+      postgres-account:
+        condition: service_healthy
+    restart: unless-stopped
+
+  credit-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        JAR_FILE: credit_processing/target/credit_processing-*.jar
+    container_name: credit-service
+    ports:
+      - "8083:8080"
+    environment:
+      - SERVER_PORT=8080
+      - DB_HOST=postgres-credit
+      - DB_PORT=5432
+      - DB_NAME=credit_db
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=password
+    depends_on:
+      postgres-credit:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  postgres-client-data:
+  postgres-account-data:
+  postgres-credit-data:
