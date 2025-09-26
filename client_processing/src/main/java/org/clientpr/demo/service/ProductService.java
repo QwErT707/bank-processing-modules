@@ -20,11 +20,11 @@ public class ProductService {
     private final ProductRepository productRepository;
 
     public ProductDTO createProduct(ProductDTO productDTO) {
-        Product product = Product.hiddenBuilder()
-                .name(productDTO.getName())
-                .key(productDTO.getKey())
-                .createDate(LocalDateTime.now())
-                .build();
+        Product product = Product.builder(
+                productDTO.getName(),
+               productDTO.getKey(),
+                LocalDateTime.now()
+                ).build();
 
         Product savedProduct = productRepository.save(product);
         String generatedProductId = savedProduct.getKey().name() + savedProduct.getId();
@@ -47,11 +47,11 @@ public class ProductService {
                 .orElseThrow(() -> new IllegalArgumentException("Product not found with id: " + id));
     }
 
-    public ProductDTO getProductByProductId(String productId) {
-        return productRepository.findByProductId(productId)
-                .map(this::convertToDTO)
-                .orElseThrow(() -> new IllegalArgumentException("Product not found with productId: " + productId));
-    }
+//    public ProductDTO getProductByProductId(String productId) {
+//        return productRepository.findByProductId(productId)
+//                .map(this::convertToDTO)
+//                .orElseThrow(() -> new IllegalArgumentException("Product not found with productId: " + productId));
+//    }
 
     public List<ProductDTO> getProductsByKey(ProductKey key) {
         return productRepository.findByKey(key)

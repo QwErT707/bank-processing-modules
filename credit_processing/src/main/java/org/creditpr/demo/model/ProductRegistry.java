@@ -28,14 +28,20 @@ public class ProductRegistry {
     @Column(name = "product_id", nullable = false)
     private Long productId;
     @NotNull
+    @Column(name = "amount", nullable = false) // a crutch due to bad logic
+    private BigDecimal amount;
+    @NotNull
     @Column(name = "interest_rate", nullable = false)
     private BigDecimal interestRate;
+    @NotNull
+    @Column(name = "month_count", nullable = false)
+    private Integer monthCount = 12;
     @NotNull
     @Column(name = "open_date", nullable = false)
     private LocalDateTime openDate;
 
-    public static ProductRegistryBuilder builder(Long clientId, Long accountId, Long productId,
-                                                 BigDecimal interestRate,LocalDateTime openDate){
-        return hiddenBuilder().clientId(clientId).accountId(accountId).productId(productId).interestRate(interestRate).openDate(openDate);
+    public static ProductRegistryBuilder builder(Long clientId, Long accountId, Long productId,BigDecimal amount,
+                                                 BigDecimal interestRate,Integer monthCount, LocalDateTime openDate){
+        return hiddenBuilder().clientId(clientId).accountId(accountId).productId(productId).amount(amount).interestRate(interestRate).monthCount(monthCount).openDate(openDate);
     }
 }

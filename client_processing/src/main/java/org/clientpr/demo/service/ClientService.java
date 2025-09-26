@@ -3,7 +3,9 @@ package org.clientpr.demo.service;
 import lombok.RequiredArgsConstructor;
 import org.clientpr.demo.model.Client;
 import org.clientpr.demo.model.dto.ClientDTO;
+import org.clientpr.demo.model.dto.UserDTO;
 import org.clientpr.demo.model.enums.DocumentType;
+import org.clientpr.demo.repository.BlacklistRegistryRepository;
 import org.clientpr.demo.repository.ClientRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,32 +18,37 @@ import java.util.stream.Collectors;
 @Transactional
 public class ClientService {
     private final ClientRepository clientRepository;
-
-    public ClientDTO createClient(ClientDTO clientDTO) {
+    private final BlacklistRegistryRepository blacklistRegistryRepository;
+    private boolean isInBlaklist(DocumentType documentType, String documentId){
+        return blacklistRegistryRepository.existsByDocumentTypeAndDocumentId(documentType, documentId);
+    }
+       public ClientDTO createClient(ClientDTO clientDTO) {
         if (clientRepository.existsByClientId(clientDTO.getClientId())) {
             throw new IllegalArgumentException("Client with this clientId already exists: " + clientDTO.getClientId());
         }
         if (clientRepository.existsByDocumentId(clientDTO.getDocumentId())) {
             throw new IllegalArgumentException("Client with this documentId already exists: " + clientDTO.getDocumentId());
         }
+        if(isInBlaklist(clientDTO.getDocumentType(), clientDTO.getDocumentId())){
+            throw new IllegalArgumentException("Client in blacklist: " + clientDTO.getClientId());
+        }
 
-        Client client = Client.hiddenBuilder()
-                .clientId(clientDTO.getClientId())
-                .userId(clientDTO.getUserId())
-                .firstName(clientDTO.getFirstName())
-                .middleName(clientDTO.getMiddleName())
-                .lastName(clientDTO.getLastName())
-                .dateOfBirth(clientDTO.getDateOfBirth())
-                .documentType(clientDTO.getDocumentType())
-                .documentId(clientDTO.getDocumentId())
-                .documentPrefix(clientDTO.getDocumentPrefix())
-                .documentSuffix(clientDTO.getDocumentSuffix())
-                .build();
+        Client client = Client.builder(
+                clientDTO.getClientId(),
+                clientDTO.getUserId(),
+               clientDTO.getFirstName(),
+                clientDTO.getMiddleName(),
+                clientDTO.getLastName(),
+                clientDTO.getDateOfBirth(),
+               clientDTO.getDocumentType(),
+                clientDTO.getDocumentId(),
+               clientDTO.getDocumentPrefix(),
+                clientDTO.getDocumentSuffix()
+                ).build();
 
         Client savedClient = clientRepository.save(client);
         return convertToDTO(savedClient);
     }
-
     public List<ClientDTO> getAllClients() {
         return clientRepository.findAll()
                 .stream()

@@ -18,15 +18,15 @@ public class PaymentRegistryService {
     private final PaymentRegistryRepository repository;
 
     public PaymentRegistryDTO createPaymentRegistry(PaymentRegistryDTO dto){
-        PaymentRegistry paymentRegistry=PaymentRegistry.hiddenBuilder()
-                .productRegistryId(dto.getProductRegistryId())
-                .paymentDate(dto.getPaymentDate())
-                .amount(dto.getAmount())
-                .interestRateAmount(dto.getInterestRateAmount())
-                .debtAmount(dto.getDebtAmount())
-                .expired(dto.getExpired())
-                .paymentExpirationDate(dto.getPaymentExpirationDate())
-                .build();
+        PaymentRegistry paymentRegistry=PaymentRegistry.builder(
+                dto.getProductRegistryId(),
+                dto.getPaymentDate(),
+                dto.getAmount(),
+                dto.getInterestRateAmount(),
+                dto.getDebtAmount(),
+                dto.getExpired(),
+                dto.getPaymentExpirationDate()
+        ).build();
         PaymentRegistry saved=repository.save(paymentRegistry);
         return convertToDTO(saved);
     }
@@ -45,7 +45,6 @@ public class PaymentRegistryService {
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
-
     public List<PaymentRegistryDTO> getExpiredPayments() {
         return repository.findByExpired(true).stream()
                 .map(this::convertToDTO)

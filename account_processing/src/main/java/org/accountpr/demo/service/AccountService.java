@@ -8,7 +8,9 @@ import org.accountpr.demo.model.enums.AccountStatus;
 import org.accountpr.demo.repository.AccountRepository;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,15 +21,15 @@ public class AccountService {
     private final AccountRepository accountRepository;
 
     public AccountDTO createAccount(AccountDTO dto) {
-        Account account = Account.hiddenBuilder()
-                .clientId(dto.getClientId())
-                .productId(dto.getProductId())
-                .balance(dto.getBalance())
-                .interestRate(dto.getInterestRate())
-                .isRecalc(dto.getIsRecalc())
-                .cardExist(dto.getCardExist())
-                .status(AccountStatus.valueOf(dto.getStatus()))
-                .build();
+        Account account = Account.builder(
+                        dto.getClientId(),
+                        dto.getProductId(),
+                        dto.getBalance(),
+                        dto.getInterestRate(),
+                        dto.getIsRecalc(),
+                        dto.getCardExist(),
+                        AccountStatus.valueOf(dto.getStatus())
+                ).build();
 
         Account saved = accountRepository.save(account);
         return convertToDTO(saved);
@@ -88,5 +90,17 @@ public class AccountService {
                 .status(account.getStatus().name())
                 .build();
     }
+
+//    public Account createAccountFromClientProduct(Map<String, Object> message) {
+//        Account account=new Account();
+//        account.setClientId(Long.valueOf(message.get("clientId").toString()));
+//        account.setProductId(Long.valueOf(message.get("productId").toString()));
+//        account.setBalance(BigDecimal.ZERO);
+//        account.setInterestRate(BigDecimal.ZERO);
+//        account.setIsRecalc(false);
+//        account.setCardExist(false);
+//        account.setStatus(AccountStatus.ACTIVE);
+//        return accountRepository.save(account);
+//    }
 }
 

@@ -20,14 +20,14 @@ public class TransactionService {
     private final TransactionRepository transactionRepository;
 
     public TransactionDTO createTransaction(TransactionDTO dto) {
-        Transaction transaction = Transaction.hiddenBuilder()
-                .accountId(dto.getAccountId())
-                .cardId(dto.getCardId())
-                .type(dto.getType())
-                .amount(dto.getAmount())
-                .status(dto.getStatus())
-                .timestamp(dto.getTimestamp())
-                .build();
+        Transaction transaction = Transaction.builder(
+                dto.getAccountId(),
+                dto.getCardId(),
+                dto.getType(),
+                dto.getAmount(),
+                dto.getStatus(),
+                dto.getTimestamp()
+        ).build();
 
         Transaction saved = transactionRepository.save(transaction);
         return convertToDTO(saved);

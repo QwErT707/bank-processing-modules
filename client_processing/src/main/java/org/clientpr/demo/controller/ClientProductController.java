@@ -2,13 +2,18 @@ package org.clientpr.demo.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.clientpr.demo.model.dto.CardCreationRequestDTO;
 import org.clientpr.demo.model.dto.ClientProductDTO;
 import org.clientpr.demo.model.enums.ProductStatus;
+import org.clientpr.demo.repository.ClientRepository;
 import org.clientpr.demo.service.ClientProductService;
+import org.clientpr.demo.service.KafkaProducerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/client-products")
@@ -16,7 +21,6 @@ import java.util.List;
 public class ClientProductController {
 
     private final ClientProductService clientProductService;
-
     @PostMapping
     public ResponseEntity<ClientProductDTO> createClientProduct(@Valid @RequestBody ClientProductDTO clientProductDTO) {
         ClientProductDTO createdClientProduct = clientProductService.createClientProduct(clientProductDTO);

@@ -41,14 +41,14 @@ public class Transaction {
     private LocalDateTime timestamp;
 
     public static TransactionBuilder builder(Long accountId, Long cardId,
-                                             TransactionType type, BigDecimal amount) {
+                                             TransactionType type, BigDecimal amount,TransactionStatus status, LocalDateTime timestamp ) {
         return hiddenBuilder()
                 .accountId(accountId)
                 .cardId(cardId)
                 .type(type)
                 .amount(amount)
-                .status(TransactionStatus.ALLOWED)
-                .timestamp(LocalDateTime.now());
+                .status(status)
+                .timestamp(timestamp);
     }
 }
 

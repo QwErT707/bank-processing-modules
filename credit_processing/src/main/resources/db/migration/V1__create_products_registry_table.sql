@@ -3,7 +3,9 @@ CREATE TABLE products_registry (
     client_id BIGINT NOT NULL,
     account_id BIGINT NOT NULL,
     product_id BIGINT NOT NULL,
+    amount NUMERIC(15,2) NOT NULL DEFAULT 0,
     interest_rate NUMERIC(10,4) NOT NULL,
+    month_count INTEGER NOT NULL DEFAULT 12,
     open_date TIMESTAMP NOT NULL
 );
 

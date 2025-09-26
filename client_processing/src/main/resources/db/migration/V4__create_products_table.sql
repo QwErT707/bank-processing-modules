@@ -7,4 +7,4 @@ CREATE TABLE products (
 );
 
 CREATE INDEX idx_products_key ON products(key);
-CREATE INDEX idx_products_product_id ON products(product_id);
+CREATE INDEX idx_products_id ON products(id);

@@ -4,13 +4,31 @@ server:
 spring:
   application:
     name: credit-service
-
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:kafka:9092}
+    consumer:
+      group-id: credit-service-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: '*'
+        spring.json.value.default.type: java.util.Map
+        spring.json.add.type.headers: false
+        spring.json.use.type.headers: false
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.trusted.packages: "*"
+        spring.json.value.default.type: java.util.Map
+        spring.json.add.type.headers: false
+        spring.json.use.type.headers: false
   datasource:
-    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:credit_db}
+    url: jdbc:postgresql://${DB_HOST:postgres-credit}:${DB_PORT:5432}/${DB_NAME:credit_db}
     username: ${DB_USERNAME:postgres}
     password: ${DB_PASSWORD:password}
     driver-class-name: org.postgresql.Driver
-
   jpa:
     hibernate:
       ddl-auto: validate
@@ -18,12 +36,30 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-
   flyway:
     enabled: true
     locations: classpath:db/migration
     baseline-on-migrate: true
+    user: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:password}
+    url: jdbc:postgresql://${DB_HOST:postgres-credit}:${DB_PORT:5432}/${DB_NAME:credit_db}
 
 logging:
   level:
     org.hibernate.SQL: DEBUG
+    org.springframework.kafka: DEBUG
+    org.clientpr.demo.creditprocessing.service.KafkaConsumerService: DEBUG
+    org.springframework.web: DEBUG
+    org.creditpr.demo: DEBUG
+
+kafka:
+  topics:
+    client-credit-products: client_credit_products
+
+credit:
+  limit: ${CREDIT_LIMIT:1000000}
+  max-delays-allowed: ${MAX_DELAYS_ALLOWED:0}
+
+client:
+  service:
+    url: ${CLIENT_SERVICE_URL:http://client-service:8080}

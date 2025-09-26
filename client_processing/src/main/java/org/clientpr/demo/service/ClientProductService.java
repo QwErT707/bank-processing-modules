@@ -3,13 +3,17 @@ package org.clientpr.demo.service;
 import lombok.RequiredArgsConstructor;
 import org.clientpr.demo.model.ClientProduct;
 import org.clientpr.demo.model.dto.ClientProductDTO;
+import org.clientpr.demo.model.dto.ProductDTO;
+import org.clientpr.demo.model.enums.ProductKey;
 import org.clientpr.demo.model.enums.ProductStatus;
 import org.clientpr.demo.repository.ClientProductRepository;
+import org.clientpr.demo.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -17,7 +21,7 @@ import java.util.stream.Collectors;
 @Transactional
 public class ClientProductService {
     private final ClientProductRepository clientProductRepository;
-
+    private final KafkaProducerService kafkaProducerService;
     public ClientProductDTO createClientProduct(ClientProductDTO clientProductDTO) {
         if (clientProductRepository.existsByClientIdAndProductId(
                 clientProductDTO.getClientId(),
@@ -25,16 +29,17 @@ public class ClientProductService {
             throw new IllegalArgumentException("Client already has this product");
         }
 
-        ClientProduct clientProduct = ClientProduct.hiddenBuilder()
-                .clientId(clientProductDTO.getClientId())
-                .productId(clientProductDTO.getProductId())
-                .openDate(clientProductDTO.getOpenDate() != null ?
-                        clientProductDTO.getOpenDate() : LocalDateTime.now())
-                .closeDate(clientProductDTO.getCloseDate())
-                .status(clientProductDTO.getStatus())
-                .build();
-
+        ClientProduct clientProduct = ClientProduct.builder(
+                clientProductDTO.getClientId(),
+                clientProductDTO.getProductId(),
+                clientProductDTO.getOpenDate() != null ?
+                        clientProductDTO.getOpenDate() : LocalDateTime.now(),
+                clientProductDTO.getCloseDate(),
+               clientProductDTO.getStatus()
+                ).build();
         ClientProduct savedClientProduct = clientProductRepository.save(clientProduct);
+ kafkaProducerService.sendToClientProducts(savedClientProduct, "CREATE");
+
         return convertToDTO(savedClientProduct);
     }
 
@@ -92,36 +97,33 @@ public class ClientProductService {
                 throw new IllegalArgumentException("Client already has this product");
             }
         }
-
         existingClientProduct.setClientId(clientProductDTO.getClientId());
         existingClientProduct.setProductId(clientProductDTO.getProductId());
         existingClientProduct.setOpenDate(clientProductDTO.getOpenDate());
         existingClientProduct.setCloseDate(clientProductDTO.getCloseDate());
         existingClientProduct.setStatus(clientProductDTO.getStatus());
-
         ClientProduct updatedClientProduct = clientProductRepository.save(existingClientProduct);
-        return convertToDTO(updatedClientProduct);
-    }
+        kafkaProducerService.sendToClientProducts(updatedClientProduct, "UPDATE");
+        return convertToDTO(updatedClientProduct);     }
 
     public ClientProductDTO updateClientProductStatus(Long id, ProductStatus status) {
         ClientProduct existingClientProduct = clientProductRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("ClientProduct not found with id: " + id));
 
         existingClientProduct.setStatus(status);
-
         if (status == ProductStatus.CLOSED && existingClientProduct.getCloseDate() == null) {
             existingClientProduct.setCloseDate(LocalDateTime.now());
         }
-
         ClientProduct updatedClientProduct = clientProductRepository.save(existingClientProduct);
         return convertToDTO(updatedClientProduct);
     }
 
     public void deleteClientProduct(Long id) {
-        if (!clientProductRepository.existsById(id)) {
-            throw new IllegalArgumentException("ClientProduct not found with id: " + id);
-        }
+        ClientProduct prod=clientProductRepository.findById(id)
+                .orElseThrow(()-> new IllegalArgumentException("ClientProduct not found with id: " + id));
+
         clientProductRepository.deleteById(id);
+        kafkaProducerService.sendToClientProducts(prod, "DELETE");
     }
 
     private ClientProductDTO convertToDTO(ClientProduct clientProduct) {

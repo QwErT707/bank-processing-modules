@@ -16,28 +16,20 @@ import java.time.LocalDateTime;
 @Builder
 public class PaymentRegistryDTO {
     private Long id;
-
     @NotNull(message = "Product registry ID is required")
     @Positive(message = "Product registry ID must be positive")
     private Long productRegistryId;
-
     @NotNull(message = "Payment date is required")
     private LocalDateTime paymentDate;
-
     @NotNull(message = "Amount is required")
     @Positive(message = "Amount must be positive")
     private BigDecimal amount;
-
     @NotNull(message = "Interest rate amount is required")
     @Positive(message = "Interest rate amount must be positive")
     private BigDecimal interestRateAmount;
-
     @NotNull(message = "Debt amount is required")
     @Positive(message = "Debt amount must be positive")
     private BigDecimal debtAmount;
-
     @NotNull(message = "Expired status is required")
     private Boolean expired;
-
-    private LocalDateTime paymentExpirationDate;
-}
+    private LocalDateTime paymentExpirationDate;}

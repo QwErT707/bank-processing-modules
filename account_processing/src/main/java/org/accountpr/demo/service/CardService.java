@@ -3,12 +3,14 @@ package org.accountpr.demo.service;
 import org.accountpr.demo.model.*;
 import org.accountpr.demo.model.dto.CardDTO;
 import org.accountpr.demo.model.enums.CardStatus;
+import org.accountpr.demo.model.enums.PaymentSystem;
 import org.accountpr.demo.repository.CardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,12 +25,12 @@ public class CardService {
             throw new IllegalArgumentException("Card with this cardId already exists: " + dto.getCardId());
         }
 
-        Card card = Card.hiddenBuilder()
-                .accountId(dto.getAccountId())
-                .cardId(dto.getCardId())
-                .paymentSystem(dto.getPaymentSystem())
-                .status(CardStatus.valueOf(dto.getStatus()))
-                .build();
+        Card card = Card.builder(
+                dto.getAccountId(),
+                dto.getCardId(),
+                dto.getPaymentSystem(),
+                CardStatus.valueOf(dto.getStatus())
+        ).build();
 
         Card saved = cardRepository.save(card);
         return convertToDTO(saved);

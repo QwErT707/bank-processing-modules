@@ -15,17 +15,11 @@ import java.time.LocalDateTime;
 @Builder
 public class ClientProductDTO {
     private Long id;
-
     @NotNull
     private Long clientId;
-
     @NotNull
     private Long productId;
-
     private LocalDateTime openDate;
-
     private LocalDateTime closeDate;
-
     @NotNull
-    private ProductStatus status;
-}
+    private ProductStatus status;}

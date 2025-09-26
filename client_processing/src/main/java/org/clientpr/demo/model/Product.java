@@ -19,17 +19,13 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column(nullable = false)
     private String name;
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ProductKey key;
-
-    @Column(name = "create_date", nullable = false)
+   @Column(name = "create_date", nullable = false)
     private LocalDateTime createDate;
-
     @Column(name = "product_id", unique = true, nullable = false)
     private String productId;
    public static ProductBuilder builder(String name, ProductKey key, LocalDateTime createDate){

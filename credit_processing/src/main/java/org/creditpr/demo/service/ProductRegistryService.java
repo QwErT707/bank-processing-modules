@@ -1,6 +1,7 @@
 package org.creditpr.demo.service;
 
 import lombok.RequiredArgsConstructor;
+import org.creditpr.demo.dto.PaymentRegistryDTO;
 import org.creditpr.demo.dto.ProductRegistryDTO;
 import org.creditpr.demo.model.ProductRegistry;
 import org.creditpr.demo.repository.ProductRegistryRepository;
@@ -16,16 +17,20 @@ import java.util.stream.Collectors;
 @Transactional
 public class ProductRegistryService {
     private final ProductRegistryRepository repository;
+    private final PaymentRegistryService paymentRegistryService;
     public ProductRegistryDTO createProductRegistry(ProductRegistryDTO dto){
         if(repository.existsByClientIdAndProductId(dto.getClientId(), dto.getProductId())){
             throw new IllegalArgumentException("Client already has this product");
         }
-        ProductRegistry productRegistry= ProductRegistry.hiddenBuilder()
-                .clientId(dto.getClientId())
-                .accountId(dto.getAccountId())
-                .productId(dto.getProductId())
-                .interestRate(dto.getInterestRate())
-                .openDate(dto.getOpenDate()).build();
+        ProductRegistry productRegistry= ProductRegistry.builder(
+                dto.getClientId(),
+                dto.getAccountId(),
+                dto.getProductId(),
+                dto.getAmount(),
+                dto.getInterestRate(),
+                dto.getMonthCount(),
+                dto.getOpenDate()
+        ).build();
         ProductRegistry saved= repository.save(productRegistry);
         return convertToDTO(saved);
     }
@@ -54,7 +59,9 @@ public class ProductRegistryService {
         existing.setClientId(dto.getClientId());
         existing.setAccountId(dto.getAccountId());
         existing.setProductId(dto.getProductId());
+        existing.setAmount(dto.getAmount());
         existing.setInterestRate(dto.getInterestRate());
+        existing.setMonthCount(dto.getMonthCount());
         existing.setOpenDate(dto.getOpenDate());
         ProductRegistry updated=repository.save(existing);
         return convertToDTO(updated);
@@ -69,14 +76,29 @@ public class ProductRegistryService {
     public boolean existsByClientAndProduct(Long clientId, Long productId){
         return repository.existsByClientIdAndProductId(clientId, productId);
     }
+    public boolean hasClientDelayedPayments(Long clientId) {
+        List<ProductRegistryDTO> clientProducts = getProductRegistriesByClientId(clientId);
 
+        for (ProductRegistryDTO product : clientProducts) {
+            List<PaymentRegistryDTO> payments = paymentRegistryService.getPaymentRegistriesByProductRegistryId(product.getId());
+            boolean hasDelayedPayment = payments.stream()
+                    .anyMatch(p -> Boolean.TRUE.equals(p.getExpired()));
+
+            if (hasDelayedPayment) {
+                return true;
+            }
+        }
+        return false;
+    }
     private ProductRegistryDTO convertToDTO(ProductRegistry productRegistry) {
    return ProductRegistryDTO.builder()
            .id(productRegistry.getId())
            .clientId(productRegistry.getClientId())
            .accountId(productRegistry.getAccountId())
            .productId(productRegistry.getProductId())
+           .amount(productRegistry.getAmount())
            .interestRate(productRegistry.getInterestRate())
+           .monthCount(productRegistry.getMonthCount())
            .openDate(productRegistry.getOpenDate())
    .build();
     }

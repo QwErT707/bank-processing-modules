@@ -24,11 +24,11 @@ public class UserService {
             throw new IllegalArgumentException("Email already exists: " + userDTO.getEmail());
         }
 
-        User user = User.hiddenBuilder()
-                .login(userDTO.getLogin())
-                .password(userDTO.getPassword()) // this needs to be hash, but well do that in JWT lesson
-                .email(userDTO.getEmail())
-                .build();
+        User user = User.builder(
+                userDTO.getLogin(),
+                userDTO.getPassword(), // this needs to be hash, but well do that in JWT lesson
+                userDTO.getEmail()
+                ).build();
 
         User savedUser = userRepository.save(user);
         return convertToDTO(savedUser);
@@ -63,7 +63,6 @@ public class UserService {
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + id));
 
-        // Проверка уникальности login и email (если изменены)
         if (!existingUser.getLogin().equals(userDTO.getLogin()) &&
                 userRepository.existsByLogin(userDTO.getLogin())) {
             throw new IllegalArgumentException("Login already exists: " + userDTO.getLogin());
@@ -74,7 +73,7 @@ public class UserService {
         }
 
         existingUser.setLogin(userDTO.getLogin());
-        existingUser.setPassword(userDTO.getPassword()); // В реальном проекте - хэширование!
+        existingUser.setPassword(userDTO.getPassword());
         existingUser.setEmail(userDTO.getEmail());
 
         User updatedUser = userRepository.save(existingUser);

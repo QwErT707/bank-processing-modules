@@ -41,15 +41,16 @@ public class Account {
     @Column(nullable = false, length = 20)
     private AccountStatus status;
 
-    public static AccountBuilder builder(Long clientId, Long productId, BigDecimal balance, BigDecimal interestRate) {
+    public static AccountBuilder builder(Long clientId, Long productId, BigDecimal balance, BigDecimal interestRate,Boolean isRecalc,Boolean cardExist,AccountStatus status
+    ) {
         return hiddenBuilder()
                 .clientId(clientId)
                 .productId(productId)
                 .balance(balance)
                 .interestRate(interestRate)
-                .isRecalc(false)
-                .cardExist(false)
-                .status(AccountStatus.ACTIVE);
+                .isRecalc(isRecalc)
+                .cardExist(cardExist)
+                .status(status);
     }
 }
 

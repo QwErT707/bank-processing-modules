@@ -31,12 +31,12 @@ public class Card {
     @Column(nullable = false, length = 20)
     private CardStatus status;
 
-    public static CardBuilder builder(Long accountId, String cardId, PaymentSystem paymentSystem) {
+    public static CardBuilder builder(Long accountId, String cardId, PaymentSystem paymentSystem, CardStatus cardStatus) {
         return hiddenBuilder()
                 .accountId(accountId)
                 .cardId(cardId)
                 .paymentSystem(paymentSystem)
-                .status(CardStatus.ACTIVE);
+                .status(cardStatus);
     }
 }
 

@@ -42,12 +42,13 @@ public class Payment {
     private PaymentType type;
 
     public static PaymentBuilder builder(Long accountId, LocalDate paymentDate,
-                                         BigDecimal amount, Boolean isCredit, PaymentType type) {
+                                         BigDecimal amount, Boolean isCredit,LocalDateTime payedAt, PaymentType type) {
         return hiddenBuilder()
                 .accountId(accountId)
                 .paymentDate(paymentDate)
                 .amount(amount)
                 .isCredit(isCredit)
+                .payedAt(payedAt)
                 .type(type);
     }
 }

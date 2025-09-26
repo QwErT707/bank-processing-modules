@@ -128,3 +128,15 @@ INSERT INTO client_products (client_id, product_id, open_date, status) VALUES
 (28, 5, NOW(), 'ACTIVE'), (28, 6, NOW(), 'ACTIVE'),
 (29, 7, NOW(), 'ACTIVE'), (29, 8, NOW(), 'ACTIVE'),
 (30, 9, NOW(), 'ACTIVE'), (30, 10, NOW(), 'ACTIVE');
+
+INSERT INTO blacklist_registry (document_type, document_id, blacklisted_at, reason, blacklist_expiration_date) VALUES
+('PASSPORT', '1234567890', NOW() - INTERVAL '10 days', 'Мошенничество с кредитными картами', NOW() + INTERVAL '90 days'),
+('PASSPORT', '0987654321', NOW() - INTERVAL '30 days', 'Неоднократные просрочки платежей', NOW() + INTERVAL '180 days'),
+('PASSPORT', '1122334455', NOW() - INTERVAL '5 days', 'Подозрительная активность', NOW() + INTERVAL '30 days'),
+('PASSPORT', '2233445566', NOW() - INTERVAL '60 days', 'Предоставление поддельных документов', NULL), -- Бессрочная блокировка
+('PASSPORT', '3344556677', NOW() - INTERVAL '15 days', 'Попытка обхода системы безопасности', NOW() + INTERVAL '60 days'),
+('PASSPORT', '4455667788', NOW() - INTERVAL '2 days', 'Нарушение условий обслуживания', NOW() + INTERVAL '7 days'),
+('PASSPORT', '5566778899', NOW() - INTERVAL '45 days', 'Незаконные финансовые операции', NOW() + INTERVAL '365 days'),
+('PASSPORT', '6677889900', NOW() - INTERVAL '20 days', 'Многократные овердрафты', NOW() + INTERVAL '120 days'),
+('PASSPORT', '7788990011', NOW() - INTERVAL '8 days', 'Подозрение в отмывании денег', NULL), -- Бессрочная блокировка
+('PASSPORT', '8899001122', NOW() - INTERVAL '3 days', 'Нарушение политики безопасности', NOW() + INTERVAL '14 days');

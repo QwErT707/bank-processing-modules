@@ -19,14 +19,14 @@ public class PaymentService {
     private final PaymentRepository paymentRepository;
 
     public PaymentDTO createPayment(PaymentDTO dto) {
-        Payment payment = Payment.hiddenBuilder()
-                .accountId(dto.getAccountId())
-                .paymentDate(dto.getPaymentDate())
-                .amount(dto.getAmount())
-                .isCredit(dto.getIsCredit())
-                .payedAt(dto.getPayedAt())
-                .type(dto.getType())
-                .build();
+        Payment payment = Payment.builder(
+                dto.getAccountId(),
+                dto.getPaymentDate(),
+                dto.getAmount(),
+                dto.getIsCredit(),
+                dto.getPayedAt(),
+                dto.getType()
+        ).build();
 
         Payment saved = paymentRepository.save(payment);
         return convertToDTO(saved);

@@ -17,23 +17,19 @@ public class ClientProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column(name = "client_id", nullable = false)
     private Long clientId;
-
     @Column(name = "product_id", nullable = false)
     private Long productId;
-
     @Column(name = "open_date", nullable = false)
     private LocalDateTime openDate;
-
     @Column(name = "close_date")
     private LocalDateTime closeDate;
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ProductStatus status;
+    public static ClientProductBuilder builder(Long clientId, Long productId,
+                                               LocalDateTime openDate, LocalDateTime closeDate,ProductStatus status){
+        return hiddenBuilder().clientId(clientId).productId(productId).openDate(openDate)
+                .closeDate(closeDate).status(status);}}
 
-    public static ClientProductBuilder builder(Long clientId, Long productId, LocalDateTime openDate, ProductStatus status){
-        return hiddenBuilder().clientId(clientId).productId(productId).openDate(openDate).status(status);}
-}

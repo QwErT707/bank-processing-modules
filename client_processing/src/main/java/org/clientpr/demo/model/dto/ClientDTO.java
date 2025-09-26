@@ -18,38 +18,28 @@ import java.time.LocalDate;
 @Builder
 public class ClientDTO {
     private Long id;
-
     @NotBlank
     @Pattern(regexp = "\\d{12}")
     private String clientId;
-
     @NotNull
     private Long userId;
-
     @NotBlank
     @Size(max = 50)
     private String firstName;
-
     @Size(max = 50)
     private String middleName;
-
-    @NotBlank
+   @NotBlank
     @Size(max = 50)
     private String lastName;
-
     @NotNull
     private LocalDate dateOfBirth;
-
     @NotNull
     private DocumentType documentType;
-
     @NotBlank
     @Size(max = 20)
     private String documentId;
-
     @Size(max = 10)
     private String documentPrefix;
-
     @Size(max = 10)
-    private String documentSuffix;
-    }
+    private String documentSuffix;    }
+

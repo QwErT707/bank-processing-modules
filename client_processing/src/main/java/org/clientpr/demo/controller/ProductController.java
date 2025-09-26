@@ -28,12 +28,17 @@ public class ProductController {
         ProductDTO product = productService.getProductById(id);
         return ResponseEntity.ok(product);
     }
-
     @GetMapping("/product-id/{productId}")
-    public ResponseEntity<ProductDTO> getProductByProductId(@PathVariable String productId) {
-        ProductDTO product = productService.getProductByProductId(productId);
+    public ResponseEntity<ProductDTO> getProductByProductId(@PathVariable Long id) {
+        ProductDTO product = productService.getProductById(id);
         return ResponseEntity.ok(product);
     }
+
+//    @GetMapping("/product-id/{productId}")
+//    public ResponseEntity<ProductDTO> getProductByProductId(@PathVariable String productId) {
+//        ProductDTO product = productService.getProductByProductId(productId);
+//        return ResponseEntity.ok(product);
+//    }
 
     @GetMapping("/key/{key}")
     public ResponseEntity<List<ProductDTO>> getProductsByKey(@PathVariable ProductKey key) {
