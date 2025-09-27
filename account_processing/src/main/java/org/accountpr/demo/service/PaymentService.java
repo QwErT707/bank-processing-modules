@@ -25,7 +25,8 @@ public class PaymentService {
                 dto.getAmount(),
                 dto.getIsCredit(),
                 dto.getPayedAt(),
-                dto.getType()
+                dto.getType(),
+                dto.getExpired()
         ).build();
 
         Payment saved = paymentRepository.save(payment);
@@ -72,6 +73,7 @@ public class PaymentService {
         payment.setIsCredit(dto.getIsCredit());
         payment.setPayedAt(dto.getPayedAt());
         payment.setType(dto.getType());
+        payment.setExpired(dto.getExpired());
 
         Payment updated = paymentRepository.save(payment);
         return convertToDTO(updated);
@@ -93,6 +95,7 @@ public class PaymentService {
                 .isCredit(payment.getIsCredit())
                 .payedAt(payment.getPayedAt())
                 .type(payment.getType())
+                .expired(payment.getExpired())
                 .build();
     }
 }

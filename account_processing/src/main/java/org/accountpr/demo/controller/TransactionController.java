@@ -8,9 +8,12 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/transactions")
@@ -18,12 +21,25 @@ import java.util.List;
 public class TransactionController {
 
     private final TransactionService transactionService;
-
+    private final KafkaTemplate<String, Object> kafkaTemplate;
     @PostMapping
     public ResponseEntity<TransactionDTO> createTransaction(@Valid @RequestBody TransactionDTO dto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(transactionService.createTransaction(dto));
+        TransactionDTO createdTransaction = transactionService.createTransaction(dto);
+        kafkaTemplate.send("client_transactions",
+                createdTransaction.getId().toString(),
+                convertToKafkaMessage(createdTransaction));
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdTransaction);
     }
-
+    private Map<String, Object> convertToKafkaMessage(TransactionDTO transaction) {
+        Map<String, Object> message = new HashMap<>();
+        message.put("transactionId", transaction.getId());
+        message.put("accountId", transaction.getAccountId());
+        message.put("cardId", transaction.getCardId());
+        message.put("type", transaction.getType().name());
+        message.put("amount", transaction.getAmount());
+        message.put("timestamp", transaction.getTimestamp().toString());
+        return message;
+    }
     @GetMapping
     public ResponseEntity<List<TransactionDTO>> getAllTransactions() {
         return ResponseEntity.ok(transactionService.getAllTransactions());

@@ -55,3 +55,13 @@ kafka:
     client-products: client_products
     client-cards: client_cards
     client-transactions: client_transactions
+transaction:
+  limits:
+    max-transactions-per-card: 10
+    time-window-minutes: 5
+    freeze-threshold: 5
+    cleanup-hours: 24
+credit:
+  payment:
+    check-interval-hours: 24    # Проверка просроченных платежей раз в сутки
+    grace-period-days: 5

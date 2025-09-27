@@ -33,5 +33,7 @@ public class PaymentDTO {
 
     @NotNull
     private PaymentType type;
+
+    private Boolean expired;
 }
 

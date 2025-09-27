@@ -6,6 +6,7 @@ CREATE TABLE payments (
     is_credit BOOLEAN NOT NULL,
     payed_at TIMESTAMP,
     type VARCHAR(50) NOT NULL,
+    expired BOOLEAN DEFAULT FALSE,
 
     CONSTRAINT fk_payments_account_id FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE
 );

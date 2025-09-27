@@ -40,16 +40,18 @@ public class Payment {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private PaymentType type;
-
+    @Column(name = "expired")
+    private Boolean expired;
     public static PaymentBuilder builder(Long accountId, LocalDate paymentDate,
-                                         BigDecimal amount, Boolean isCredit,LocalDateTime payedAt, PaymentType type) {
+                                         BigDecimal amount, Boolean isCredit,LocalDateTime payedAt, PaymentType type, Boolean expired) {
         return hiddenBuilder()
                 .accountId(accountId)
                 .paymentDate(paymentDate)
                 .amount(amount)
                 .isCredit(isCredit)
                 .payedAt(payedAt)
-                .type(type);
+                .type(type)
+                .expired(expired);
     }
 }
 
