@@ -1,6 +1,7 @@
 package org.creditpr.demo.service;
 
 import lombok.RequiredArgsConstructor;
+import org.aop.annotations.LogDatasourceError;
 import org.creditpr.demo.dto.PaymentRegistryDTO;
 import org.creditpr.demo.dto.ProductRegistryDTO;
 import org.creditpr.demo.model.ProductRegistry;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 public class ProductRegistryService {
     private final ProductRegistryRepository repository;
     private final PaymentRegistryService paymentRegistryService;
+    @LogDatasourceError(type = "ERROR")
     public ProductRegistryDTO createProductRegistry(ProductRegistryDTO dto){
         if(repository.existsByClientIdAndProductId(dto.getClientId(), dto.getProductId())){
             throw new IllegalArgumentException("Client already has this product");

@@ -2,6 +2,7 @@ package org.clientpr.demo.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.aop.annotations.HttpIncomeRequestLog;
 import org.clientpr.demo.model.dto.ProductDTO;
 import org.clientpr.demo.model.enums.ProductKey;
 import org.clientpr.demo.service.ProductService;
@@ -14,10 +15,9 @@ import java.util.List;
 @RequestMapping("/api/products")
 @RequiredArgsConstructor
 public class ProductController {
-
     private final ProductService productService;
-
     @PostMapping
+    @HttpIncomeRequestLog
     public ResponseEntity<ProductDTO> createProduct(@Valid @RequestBody ProductDTO productDTO) {
         ProductDTO createdProduct = productService.createProduct(productDTO);
         return ResponseEntity.ok(createdProduct);

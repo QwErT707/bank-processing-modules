@@ -2,6 +2,7 @@ package org.clientpr.demo.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.aop.annotations.HttpIncomeRequestLog;
 import org.clientpr.demo.model.dto.BlacklistRegistryDTO;
 import org.clientpr.demo.model.enums.DocumentType;
 import org.clientpr.demo.service.BlacklistRegistryService;
@@ -16,6 +17,7 @@ import java.util.List;
 public class BlacklistRegistryController {
     private final BlacklistRegistryService blacklistRegistryService;
     @PostMapping
+    @HttpIncomeRequestLog
     public ResponseEntity<BlacklistRegistryDTO> addToBlacklist(@Valid @RequestBody BlacklistRegistryDTO blacklistDTO) {
         BlacklistRegistryDTO saved = blacklistRegistryService.addToBlacklist(blacklistDTO);
         return ResponseEntity.ok(saved);

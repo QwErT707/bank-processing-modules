@@ -4,6 +4,7 @@ import org.accountpr.demo.model.*;
 import org.accountpr.demo.model.dto.PaymentDTO;
 import org.accountpr.demo.model.enums.PaymentType;
 import org.accountpr.demo.repository.PaymentRepository;
+import org.aop.annotations.LogDatasourceError;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 public class PaymentService {
 
     private final PaymentRepository paymentRepository;
-
+    @LogDatasourceError(type = "ERROR")
     public PaymentDTO createPayment(PaymentDTO dto) {
         Payment payment = Payment.builder(
                 dto.getAccountId(),
@@ -62,7 +63,7 @@ public class PaymentService {
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
-
+    @LogDatasourceError(type = "ERROR")
     public PaymentDTO updatePayment(Long id, PaymentDTO dto) {
         Payment payment = paymentRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Payment not found with id: " + id));
@@ -79,6 +80,7 @@ public class PaymentService {
         return convertToDTO(updated);
     }
 
+    @LogDatasourceError(type = "WARN")
     public void deletePayment(Long id) {
         if (!paymentRepository.existsById(id)) {
             throw new IllegalArgumentException("Payment not found with id: " + id);

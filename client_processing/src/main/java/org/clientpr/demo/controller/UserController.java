@@ -2,6 +2,7 @@ package org.clientpr.demo.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.aop.annotations.HttpIncomeRequestLog;
 import org.clientpr.demo.model.dto.UserDTO;
 import org.clientpr.demo.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -13,10 +14,9 @@ import java.util.List;
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
 public class UserController {
-
     private final UserService userService;
-
     @PostMapping
+    @HttpIncomeRequestLog
     public ResponseEntity<UserDTO> createUser(@Valid @RequestBody UserDTO userDTO) {
         UserDTO createdUser = userService.createUser(userDTO);
         return ResponseEntity.ok(createdUser);

@@ -6,6 +6,7 @@ import org.accountpr.demo.model.Account;
 import org.accountpr.demo.model.dto.AccountDTO;
 import org.accountpr.demo.model.enums.AccountStatus;
 import org.accountpr.demo.repository.AccountRepository;
+import org.aop.annotations.LogDatasourceError;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -20,6 +21,7 @@ public class AccountService {
 
     private final AccountRepository accountRepository;
 
+    @LogDatasourceError(type="ERROR")
     public AccountDTO createAccount(AccountDTO dto) {
         Account account = Account.builder(
                         dto.getClientId(),
@@ -54,7 +56,7 @@ public class AccountService {
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
-
+    @LogDatasourceError(type="ERROR")
     public AccountDTO updateAccount(Long id, AccountDTO dto) {
         Account existing = accountRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Account not found with id: " + id));
@@ -70,7 +72,7 @@ public class AccountService {
         Account updated = accountRepository.save(existing);
         return convertToDTO(updated);
     }
-
+    @LogDatasourceError(type="WARN")
     public void deleteAccount(Long id) {
         if (!accountRepository.existsById(id)) {
             throw new IllegalArgumentException("Account not found with id: " + id);
