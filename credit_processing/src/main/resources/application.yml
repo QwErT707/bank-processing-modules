@@ -24,6 +24,7 @@ spring:
         spring.json.value.default.type: java.util.Map
         spring.json.add.type.headers: false
         spring.json.use.type.headers: false
+
   datasource:
     url: jdbc:postgresql://${DB_HOST:postgres-credit}:${DB_PORT:5432}/${DB_NAME:credit_db}
     username: ${DB_USERNAME:postgres}
@@ -46,15 +47,20 @@ spring:
 
 logging:
   level:
-    org.hibernate.SQL: DEBUG
-    org.springframework.kafka: DEBUG
-    org.clientpr.demo.creditprocessing.service.KafkaConsumerService: DEBUG
-    org.springframework.web: DEBUG
-    org.creditpr.demo: DEBUG
+    org.aop: DEBUG
+    org.springframework.aop: DEBUG
+    org.springframework.context: DEBUG
+    org.springframework.boot: DEBUG
+    #org.hibernate.SQL: DEBUG
+    #org.springframework.kafka: DEBUG
+    #org.clientpr.demo.creditprocessing.service.KafkaConsumerService: DEBUG
+    #org.springframework.web: DEBUG
+    #org.creditpr.demo: DEBUG
 
 kafka:
   topics:
     client-credit-products: client_credit_products
+    service-logs: service_logs
 
 credit:
   limit: ${CREDIT_LIMIT:1000000}

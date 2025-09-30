@@ -1,6 +1,7 @@
 package org.clientpr.demo.service;
 
 import lombok.RequiredArgsConstructor;
+import org.aop.annotations.LogDatasourceError;
 import org.clientpr.demo.model.ClientProduct;
 import org.clientpr.demo.model.dto.ClientProductDTO;
 import org.clientpr.demo.model.dto.ProductDTO;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 public class ClientProductService {
     private final ClientProductRepository clientProductRepository;
     private final KafkaProducerService kafkaProducerService;
+    @LogDatasourceError(type = "ERROR")
     public ClientProductDTO createClientProduct(ClientProductDTO clientProductDTO) {
         if (clientProductRepository.existsByClientIdAndProductId(
                 clientProductDTO.getClientId(),

@@ -22,10 +22,12 @@
 		<developer/>
 	</developers>
 	<modules>
+		<module>aop_annotations</module>
 		<module>client_processing</module>
 		<module>account_processing</module>
 		<module>credit_processing</module>
-    </modules>
+
+	</modules>
 	<scm>
 		<connection/>
 		<developerConnection/>
@@ -87,13 +89,7 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
 	</dependencies>
-
 	<build>
 		<plugins>
 			<plugin>
