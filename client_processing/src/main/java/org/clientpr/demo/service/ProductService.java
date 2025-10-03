@@ -2,6 +2,7 @@ package org.clientpr.demo.service;
 
 
 import lombok.RequiredArgsConstructor;
+import org.aop.annotations.LogDatasourceError;
 import org.clientpr.demo.model.Product;
 import org.clientpr.demo.model.dto.ProductDTO;
 import org.clientpr.demo.model.enums.ProductKey;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 public class ProductService {
     private final ProductRepository productRepository;
 
+    @LogDatasourceError(type = "ERROR")
     public ProductDTO createProduct(ProductDTO productDTO) {
         Product product = Product.builder(
                 productDTO.getName(),

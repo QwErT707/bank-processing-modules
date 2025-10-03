@@ -11,6 +11,7 @@ import org.accountpr.demo.model.enums.AccountStatus;
 import org.accountpr.demo.model.enums.CardStatus;
 import org.accountpr.demo.model.enums.TransactionType;
 import org.accountpr.demo.repository.CardTransactionMonitoringRepository;
+import org.aop.annotations.LogDatasourceError;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,7 @@ public class TransactionMonitoringService {
     private int cleanupHours;
 
     @Transactional
+    @LogDatasourceError(type = "ERROR")
     public boolean checkTransactionLimit(Long cardId, TransactionType transactionType, BigDecimal amount) {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime windowStart = now.minusMinutes(timeWindowMinutes);

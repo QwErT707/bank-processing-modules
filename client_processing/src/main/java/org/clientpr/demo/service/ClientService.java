@@ -1,6 +1,8 @@
 package org.clientpr.demo.service;
 
 import lombok.RequiredArgsConstructor;
+import org.aop.annotations.LogDatasourceError;
+import org.aop.annotations.Metric;
 import org.clientpr.demo.model.Client;
 import org.clientpr.demo.model.dto.ClientDTO;
 import org.clientpr.demo.model.dto.UserDTO;
@@ -13,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -22,6 +25,8 @@ public class ClientService {
     private boolean isInBlaklist(DocumentType documentType, String documentId){
         return blacklistRegistryRepository.existsByDocumentTypeAndDocumentId(documentType, documentId);
     }
+    @LogDatasourceError(type="ERROR")
+    @Metric
        public ClientDTO createClient(ClientDTO clientDTO) {
         if (clientRepository.existsByClientId(clientDTO.getClientId())) {
             throw new IllegalArgumentException("Client with this clientId already exists: " + clientDTO.getClientId());
@@ -48,40 +53,40 @@ public class ClientService {
 
         Client savedClient = clientRepository.save(client);
         return convertToDTO(savedClient);
-    }
+    }@Metric
     public List<ClientDTO> getAllClients() {
         return clientRepository.findAll()
                 .stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
-
+    @Metric(name="client.search.byId")
     public ClientDTO getClientById(Long id) {
         return clientRepository.findById(id)
                 .map(this::convertToDTO)
                 .orElseThrow(() -> new IllegalArgumentException("Client not found with id: " + id));
     }
-
+    @Metric(name="client.search.byClientId")
     public ClientDTO getClientByClientId(String clientId) {
         return clientRepository.findByClientId(clientId)
                 .map(this::convertToDTO)
                 .orElseThrow(() -> new IllegalArgumentException("Client not found with clientId: " + clientId));
     }
-
+    @Metric(name="client.search.byUserId")
     public List<ClientDTO> getClientsByUserId(Long userId) {
         return clientRepository.findByUserId(userId)
                 .stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
-
+    @Metric(name="client.search.byDocumentType")
     public List<ClientDTO> getClientsByDocumentType(DocumentType documentType) {
         return clientRepository.findByDocumentType(documentType)
                 .stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
-
+    @LogDatasourceError(type = "ERROR")
     public ClientDTO updateClient(Long id, ClientDTO clientDTO) {
         Client existingClient = clientRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Client not found with id: " + id));
@@ -110,7 +115,7 @@ public class ClientService {
         Client updatedClient = clientRepository.save(existingClient);
         return convertToDTO(updatedClient);
     }
-
+    @LogDatasourceError(type = "WARNING")
     public void deleteClient(Long id) {
         if (!clientRepository.existsById(id)) {
             throw new IllegalArgumentException("Client not found with id: " + id);

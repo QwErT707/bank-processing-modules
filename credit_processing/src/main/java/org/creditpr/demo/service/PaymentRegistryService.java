@@ -1,6 +1,7 @@
 package org.creditpr.demo.service;
 
 import lombok.RequiredArgsConstructor;
+import org.aop.annotations.LogDatasourceError;
 import org.creditpr.demo.dto.PaymentRegistryDTO;
 import org.creditpr.demo.model.PaymentRegistry;
 import org.creditpr.demo.repository.PaymentRegistryRepository;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 public class PaymentRegistryService {
     private final PaymentRegistryRepository repository;
 
+    @LogDatasourceError(type = "ERROR")
     public PaymentRegistryDTO createPaymentRegistry(PaymentRegistryDTO dto){
         PaymentRegistry paymentRegistry=PaymentRegistry.builder(
                 dto.getProductRegistryId(),

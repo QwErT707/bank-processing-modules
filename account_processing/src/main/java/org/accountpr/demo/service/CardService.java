@@ -6,6 +6,7 @@ import org.accountpr.demo.model.enums.CardStatus;
 import org.accountpr.demo.model.enums.PaymentSystem;
 import org.accountpr.demo.repository.CardRepository;
 import lombok.RequiredArgsConstructor;
+import org.aop.annotations.LogDatasourceError;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 public class CardService {
 
     private final CardRepository cardRepository;
-
+    @LogDatasourceError(type="ERROR")
     public CardDTO createCard(CardDTO dto) {
         if (cardRepository.existsByCardId(dto.getCardId())) {
             throw new IllegalArgumentException("Card with this cardId already exists: " + dto.getCardId());
@@ -60,6 +61,7 @@ public class CardService {
                 .collect(Collectors.toList());
     }
 
+    @LogDatasourceError(type="ERROR")
     public CardDTO updateCard(Long id, CardDTO dto) {
         Card card = cardRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Card not found with id: " + id));
@@ -78,6 +80,7 @@ public class CardService {
         return convertToDTO(updated);
     }
 
+    @LogDatasourceError(type="WARN")
     public void deleteCard(Long id) {
         if (!cardRepository.existsById(id)) {
             throw new IllegalArgumentException("Card not found with id: " + id);

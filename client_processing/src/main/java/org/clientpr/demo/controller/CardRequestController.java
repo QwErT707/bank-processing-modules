@@ -2,6 +2,7 @@ package org.clientpr.demo.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.aop.annotations.HttpIncomeRequestLog;
 import org.clientpr.demo.model.dto.CardCreationRequestDTO;
 import org.clientpr.demo.repository.ClientRepository;
 import org.clientpr.demo.service.ClientService;
@@ -21,6 +22,7 @@ public class CardRequestController {
     private final ClientRepository clientRepository;
 
     @PostMapping("/client/{clientId}/cards/request")
+    @HttpIncomeRequestLog
     public ResponseEntity<String> requestCardCreation(
             @PathVariable Long clientId,
             @Valid @RequestBody CardCreationRequestDTO cardRequest) {
