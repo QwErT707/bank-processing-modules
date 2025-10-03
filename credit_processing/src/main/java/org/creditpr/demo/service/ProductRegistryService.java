@@ -2,6 +2,7 @@ package org.creditpr.demo.service;
 
 import lombok.RequiredArgsConstructor;
 import org.aop.annotations.LogDatasourceError;
+import org.aop.annotations.Metric;
 import org.creditpr.demo.dto.PaymentRegistryDTO;
 import org.creditpr.demo.dto.ProductRegistryDTO;
 import org.creditpr.demo.model.ProductRegistry;
@@ -20,6 +21,7 @@ public class ProductRegistryService {
     private final ProductRegistryRepository repository;
     private final PaymentRegistryService paymentRegistryService;
     @LogDatasourceError(type = "ERROR")
+    @Metric
     public ProductRegistryDTO createProductRegistry(ProductRegistryDTO dto){
         if(repository.existsByClientIdAndProductId(dto.getClientId(), dto.getProductId())){
             throw new IllegalArgumentException("Client already has this product");
@@ -40,13 +42,13 @@ public class ProductRegistryService {
     public Optional<ProductRegistryDTO> getProductRegistryById(Long id){
         return repository.findById(id).map(this::convertToDTO);
     }
-
+    @Metric
     public List<ProductRegistryDTO> getAllProductRegistries(){
         return repository.findAll().stream().map(this::convertToDTO).collect(Collectors.toList());
-    }
+    }@Metric(name="productRegistry.search.byClientId")
     public List<ProductRegistryDTO> getProductRegistriesByClientId(Long clientId){
         return repository.findByClientId(clientId).stream().map(this::convertToDTO).collect(Collectors.toList());
-    }
+    }@Metric(name="productRegistry.search.byProductId")
     public List<ProductRegistryDTO> getProductRegistriesByProductId(Long productId){
         return repository.findByProductId(productId).stream().map(this::convertToDTO).collect(Collectors.toList());
     }

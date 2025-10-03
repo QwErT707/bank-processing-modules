@@ -69,3 +69,9 @@ credit:
   payment:
     check-interval-hours: 24    #check expired payments one per day
     grace-period-days: 5
+aop:
+  metric:
+    execution-time-limit: 2000
+  cache:
+    default-ttl: 300000
+    cleanup-interval: 60000

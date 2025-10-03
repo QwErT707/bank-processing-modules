@@ -69,3 +69,9 @@ credit:
 client:
   service:
     url: ${CLIENT_SERVICE_URL:http://client-service:8080}
+aop:
+  metric:
+    execution-time-limit: 2000
+  cache:
+    default-ttl: 300000
+    cleanup-interval: 60000

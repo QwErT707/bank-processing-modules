@@ -7,6 +7,7 @@ import org.accountpr.demo.model.dto.AccountDTO;
 import org.accountpr.demo.model.enums.AccountStatus;
 import org.accountpr.demo.repository.AccountRepository;
 import org.aop.annotations.LogDatasourceError;
+import org.aop.annotations.Metric;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -22,6 +23,7 @@ public class AccountService {
     private final AccountRepository accountRepository;
 
     @LogDatasourceError(type="ERROR")
+    @Metric
     public AccountDTO createAccount(AccountDTO dto) {
         Account account = Account.builder(
                         dto.getClientId(),
@@ -36,7 +38,7 @@ public class AccountService {
         Account saved = accountRepository.save(account);
         return convertToDTO(saved);
     }
-
+@Metric
     public List<AccountDTO> getAllAccounts() {
         return accountRepository.findAll()
                 .stream()
@@ -49,7 +51,7 @@ public class AccountService {
                 .map(this::convertToDTO)
                 .orElseThrow(() -> new IllegalArgumentException("Account not found with id: " + id));
     }
-
+    @Metric(name="accounts.search.byClientId")
     public List<AccountDTO> getAccountsByClientId(Long clientId) {
         return accountRepository.findByClientId(clientId)
                 .stream()
