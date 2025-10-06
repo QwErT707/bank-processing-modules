@@ -1,6 +1,6 @@
 package org.creditpr.demo.repository;
 
-import org.aop.annotations.Cached;
+import ru.t1hwork.starter.aop.annotations.Cached;
 import org.creditpr.demo.model.ProductRegistry;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

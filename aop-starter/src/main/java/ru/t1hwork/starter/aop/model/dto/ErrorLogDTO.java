@@ -1,4 +1,4 @@
-package org.aop.model.dto;
+package ru.t1hwork.starter.aop.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

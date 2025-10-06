@@ -1,4 +1,4 @@
-package org.aop.annotations;
+package ru.t1hwork.starter.aop.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

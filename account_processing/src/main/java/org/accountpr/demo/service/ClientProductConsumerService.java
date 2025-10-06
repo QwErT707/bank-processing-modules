@@ -2,14 +2,12 @@ package org.accountpr.demo.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.accountpr.demo.model.Account;
-import org.accountpr.demo.model.Card;
 import org.accountpr.demo.model.dto.AccountDTO;
 import org.accountpr.demo.model.dto.CardDTO;
 import org.accountpr.demo.model.dto.PaymentDTO;
 import org.accountpr.demo.model.dto.TransactionDTO;
 import org.accountpr.demo.model.enums.*;
-import org.aop.annotations.LogDatasourceError;
+import ru.t1hwork.starter.aop.annotations.LogDatasourceError;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 

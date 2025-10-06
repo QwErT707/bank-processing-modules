@@ -1,11 +1,10 @@
 package org.clientpr.demo.service;
 
 import lombok.RequiredArgsConstructor;
-import org.aop.annotations.LogDatasourceError;
-import org.aop.annotations.Metric;
+import ru.t1hwork.starter.aop.annotations.LogDatasourceError;
+import ru.t1hwork.starter.aop.annotations.Metric;
 import org.clientpr.demo.model.Client;
 import org.clientpr.demo.model.dto.ClientDTO;
-import org.clientpr.demo.model.dto.UserDTO;
 import org.clientpr.demo.model.enums.DocumentType;
 import org.clientpr.demo.repository.BlacklistRegistryRepository;
 import org.clientpr.demo.repository.ClientRepository;

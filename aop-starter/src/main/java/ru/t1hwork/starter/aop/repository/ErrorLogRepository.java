@@ -1,6 +1,6 @@
-package org.aop.repository;
+package ru.t1hwork.starter.aop.repository;
 
-import org.aop.model.ErrorLog;
+import ru.t1hwork.starter.aop.model.ErrorLog;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

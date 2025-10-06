@@ -47,7 +47,7 @@ logging:
   level:
     #org.hibernate.SQL: DEBUG
     #org.springframework.kafka: DEBUG
-    org.aop: DEBUG
+    ru.t1hwork.starter.aop: DEBUG
     org.springframework.aop: DEBUG
     org.springframework.context: DEBUG
     org.springframework.boot: DEBUG
@@ -69,9 +69,16 @@ credit:
   payment:
     check-interval-hours: 24    #check expired payments one per day
     grace-period-days: 5
-aop:
-  metric:
-    execution-time-limit: 2000
-  cache:
-    default-ttl: 300000
-    cleanup-interval: 60000
+t1:
+  aop:
+    enabled: true
+    kafka:
+      enabled: true
+      topic: service_logs
+    metric:
+      enabled: true
+      execution-time-limit: 2000
+    cache:
+      enabled: true
+      default-ttl: 300000
+      #cleanup-interval: 60000

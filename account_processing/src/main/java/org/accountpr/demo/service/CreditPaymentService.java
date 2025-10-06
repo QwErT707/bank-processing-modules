@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.accountpr.demo.model.dto.AccountDTO;
 import org.accountpr.demo.model.dto.PaymentDTO;
 import org.accountpr.demo.model.enums.PaymentType;
-import org.aop.annotations.LogDatasourceError;
+import ru.t1hwork.starter.aop.annotations.LogDatasourceError;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

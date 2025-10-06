@@ -1,12 +1,12 @@
-package org.aop.aspect;
+package ru.t1hwork.starter.aop.aspect;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.aop.annotations.HttpIncomeRequestLog;
-import org.aop.model.ErrorLog;
-import org.aop.model.dto.ErrorLogDTO;
-import org.aop.repository.ErrorLogRepository;
+import ru.t1hwork.starter.aop.annotations.HttpIncomeRequestLog;
+import ru.t1hwork.starter.aop.model.ErrorLog;
+import ru.t1hwork.starter.aop.model.dto.ErrorLogDTO;
+import ru.t1hwork.starter.aop.repository.ErrorLogRepository;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -23,7 +23,7 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 @Aspect
-@Component
+//@Component сreeate through injection spring
 @Slf4j
 @RequiredArgsConstructor
 public class HttpIncomeRequestLogAspect {

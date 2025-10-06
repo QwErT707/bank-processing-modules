@@ -1,7 +1,7 @@
 package org.creditpr.demo.service;
 
 import lombok.RequiredArgsConstructor;
-import org.aop.annotations.LogDatasourceError;
+import ru.t1hwork.starter.aop.annotations.LogDatasourceError;
 import org.creditpr.demo.dto.PaymentRegistryDTO;
 import org.creditpr.demo.model.PaymentRegistry;
 import org.creditpr.demo.repository.PaymentRegistryRepository;

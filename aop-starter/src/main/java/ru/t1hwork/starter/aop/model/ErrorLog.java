@@ -1,4 +1,4 @@
-package org.aop.model;
+package ru.t1hwork.starter.aop.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

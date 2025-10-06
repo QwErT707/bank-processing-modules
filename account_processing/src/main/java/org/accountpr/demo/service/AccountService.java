@@ -6,13 +6,11 @@ import org.accountpr.demo.model.Account;
 import org.accountpr.demo.model.dto.AccountDTO;
 import org.accountpr.demo.model.enums.AccountStatus;
 import org.accountpr.demo.repository.AccountRepository;
-import org.aop.annotations.LogDatasourceError;
-import org.aop.annotations.Metric;
+import ru.t1hwork.starter.aop.annotations.LogDatasourceError;
+import ru.t1hwork.starter.aop.annotations.Metric;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service

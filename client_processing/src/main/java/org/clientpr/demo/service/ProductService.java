@@ -2,7 +2,7 @@ package org.clientpr.demo.service;
 
 
 import lombok.RequiredArgsConstructor;
-import org.aop.annotations.LogDatasourceError;
+import ru.t1hwork.starter.aop.annotations.LogDatasourceError;
 import org.clientpr.demo.model.Product;
 import org.clientpr.demo.model.dto.ProductDTO;
 import org.clientpr.demo.model.enums.ProductKey;

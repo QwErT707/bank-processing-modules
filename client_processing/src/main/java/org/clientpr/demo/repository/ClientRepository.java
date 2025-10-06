@@ -1,6 +1,6 @@
 package org.clientpr.demo.repository;
 
-import org.aop.annotations.Cached;
+import ru.t1hwork.starter.aop.annotations.Cached;
 import org.clientpr.demo.model.Client;
 import org.clientpr.demo.model.enums.DocumentType;
 import org.springframework.data.jpa.repository.JpaRepository;

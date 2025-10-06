@@ -1,20 +1,16 @@
 package org.clientpr.demo.service;
 
 import lombok.RequiredArgsConstructor;
-import org.aop.annotations.LogDatasourceError;
+import ru.t1hwork.starter.aop.annotations.LogDatasourceError;
 import org.clientpr.demo.model.ClientProduct;
 import org.clientpr.demo.model.dto.ClientProductDTO;
-import org.clientpr.demo.model.dto.ProductDTO;
-import org.clientpr.demo.model.enums.ProductKey;
 import org.clientpr.demo.model.enums.ProductStatus;
 import org.clientpr.demo.repository.ClientProductRepository;
-import org.clientpr.demo.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

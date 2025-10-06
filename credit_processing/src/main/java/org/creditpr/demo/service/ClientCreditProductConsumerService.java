@@ -2,8 +2,8 @@ package org.creditpr.demo.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.aop.annotations.HttpIncomeRequestLog;
-import org.aop.annotations.HttpOutcomeRequestLog;
+import ru.t1hwork.starter.aop.annotations.HttpIncomeRequestLog;
+import ru.t1hwork.starter.aop.annotations.HttpOutcomeRequestLog;
 import org.creditpr.demo.dto.PaymentRegistryDTO;
 import org.creditpr.demo.dto.ProductRegistryDTO;
 import org.springframework.beans.factory.annotation.Value;

@@ -4,7 +4,7 @@ import org.accountpr.demo.model.dto.AccountDTO;
 import org.accountpr.demo.service.AccountService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.aop.annotations.HttpIncomeRequestLog;
+import ru.t1hwork.starter.aop.annotations.HttpIncomeRequestLog;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

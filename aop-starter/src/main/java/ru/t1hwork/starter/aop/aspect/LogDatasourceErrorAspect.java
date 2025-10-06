@@ -1,12 +1,12 @@
-package org.aop.aspect;
+package ru.t1hwork.starter.aop.aspect;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.aop.annotations.LogDatasourceError;
-import org.aop.model.ErrorLog;
-import org.aop.model.dto.ErrorLogDTO;
-import org.aop.repository.ErrorLogRepository;
+import ru.t1hwork.starter.aop.annotations.LogDatasourceError;
+import ru.t1hwork.starter.aop.model.ErrorLog;
+import ru.t1hwork.starter.aop.model.dto.ErrorLogDTO;
+import ru.t1hwork.starter.aop.repository.ErrorLogRepository;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
@@ -21,7 +21,7 @@ import java.util.Arrays;
 
 @Slf4j
 @Aspect
-@Component
+//@Component сreeate through injection spring
 @RequiredArgsConstructor
 public class LogDatasourceErrorAspect {
     private final KafkaTemplate<String, Object> kafkaTemplate;

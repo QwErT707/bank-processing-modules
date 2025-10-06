@@ -6,9 +6,9 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-@SpringBootApplication(scanBasePackages = {"org.clientpr.demo", "org.aop"})
-@EntityScan(basePackages = {"org.clientpr.demo", "org.aop.model"})
-@EnableJpaRepositories(basePackages = {"org.clientpr.demo", "org.aop.repository"})
+@SpringBootApplication(scanBasePackages = {"org.clientpr.demo", "ru.t1hwork.starter.aop"})
+@EntityScan(basePackages = {"org.clientpr.demo", "ru.t1hwork.starter.aop.model"})
+@EnableJpaRepositories(basePackages = {"org.clientpr.demo", "ru.t1hwork.starter.aop.repository"})
 @EnableScheduling
 //@SpringBootApplication
 public class ClientProcMain {

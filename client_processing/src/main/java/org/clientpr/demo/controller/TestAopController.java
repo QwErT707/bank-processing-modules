@@ -6,13 +6,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class TestAopController {
     @GetMapping("/test-aop")
-    @org.aop.annotations.HttpIncomeRequestLog
+    @ru.t1hwork.starter.aop.annotations.HttpIncomeRequestLog
     public String testAop() {
         return "AOP Test";
     }
 
     @GetMapping("/test-error")
-    @org.aop.annotations.LogDatasourceError
+    @ru.t1hwork.starter.aop.annotations.LogDatasourceError
     public String testError() {
         throw new RuntimeException("Test error for AOP");
     }

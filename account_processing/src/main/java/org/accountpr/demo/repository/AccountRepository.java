@@ -1,7 +1,7 @@
 package org.accountpr.demo.repository;
 
 import org.accountpr.demo.model.Account;
-import org.aop.annotations.Cached;
+import ru.t1hwork.starter.aop.annotations.Cached;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

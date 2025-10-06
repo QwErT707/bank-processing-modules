@@ -1,15 +1,14 @@
-package org.aop.aspect;
+package ru.t1hwork.starter.aop.aspect;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.aop.annotations.Cached;
+import ru.t1hwork.starter.aop.annotations.Cached;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -20,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Aspect
-@Component
+//@Component сreeate through injection spring
 public class CachedAspect {
     private final Map<String, Map<Object, CacheEntry>> cacheStore= new ConcurrentHashMap<>();
     private final ScheduledExecutorService cleanupScheduler= Executors.newScheduledThreadPool(1);

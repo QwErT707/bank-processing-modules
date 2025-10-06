@@ -22,12 +22,13 @@
 		<developer/>
 	</developers>
 	<modules>
-		<module>aop_annotations</module>
+	<!--	<module>aop_annotations</module>-->
+		<module>aop-starter</module>
 		<module>client_processing</module>
 		<module>account_processing</module>
 		<module>credit_processing</module>
 
-	</modules>
+    </modules>
 	<scm>
 		<connection/>
 		<developerConnection/>

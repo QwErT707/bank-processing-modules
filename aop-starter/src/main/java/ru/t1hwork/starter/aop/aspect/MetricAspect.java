@@ -1,9 +1,9 @@
-package org.aop.aspect;
+package ru.t1hwork.starter.aop.aspect;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.aop.annotations.Metric;
-import org.aop.model.dto.ErrorLogDTO;
+import ru.t1hwork.starter.aop.annotations.Metric;
+import ru.t1hwork.starter.aop.model.dto.ErrorLogDTO;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -18,7 +18,7 @@ import java.util.Arrays;
 
 @Slf4j
 @Aspect
-@Component
+//@Component сreeate through injection spring
 @RequiredArgsConstructor
 public class MetricAspect {
     private final KafkaTemplate<String, Object> kafkaTemplate;

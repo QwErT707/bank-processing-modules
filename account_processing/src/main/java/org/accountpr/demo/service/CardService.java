@@ -3,15 +3,13 @@ package org.accountpr.demo.service;
 import org.accountpr.demo.model.*;
 import org.accountpr.demo.model.dto.CardDTO;
 import org.accountpr.demo.model.enums.CardStatus;
-import org.accountpr.demo.model.enums.PaymentSystem;
 import org.accountpr.demo.repository.CardRepository;
 import lombok.RequiredArgsConstructor;
-import org.aop.annotations.LogDatasourceError;
+import ru.t1hwork.starter.aop.annotations.LogDatasourceError;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service

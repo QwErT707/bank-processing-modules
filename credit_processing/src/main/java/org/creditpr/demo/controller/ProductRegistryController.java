@@ -2,7 +2,7 @@ package org.creditpr.demo.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.aop.annotations.HttpIncomeRequestLog;
+import ru.t1hwork.starter.aop.annotations.HttpIncomeRequestLog;
 import org.creditpr.demo.dto.ProductRegistryDTO;
 import org.creditpr.demo.service.ProductRegistryService;
 import org.springframework.http.ResponseEntity;

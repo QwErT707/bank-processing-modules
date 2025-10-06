@@ -2,7 +2,7 @@ package org.clientpr.demo.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.aop.annotations.HttpIncomeRequestLog;
+import ru.t1hwork.starter.aop.annotations.HttpIncomeRequestLog;
 import org.clientpr.demo.model.dto.UserDTO;
 import org.clientpr.demo.service.UserService;
 import org.springframework.http.ResponseEntity;

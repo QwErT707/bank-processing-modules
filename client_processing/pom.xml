@@ -19,7 +19,7 @@
     </properties>
     <dependencies> <dependency>
         <groupId>ru.t1hwork</groupId>
-        <artifactId>aop_annotations</artifactId>
+        <artifactId>aop-starter</artifactId>
         <version>0.0.1-SNAPSHOT</version>
        <!-- <scope>system</scope>
         <systemPath>${project.basedir}/../aop_annotations/target/aop_annotations-0.0.1-SNAPSHOT.jar</systemPath>-->

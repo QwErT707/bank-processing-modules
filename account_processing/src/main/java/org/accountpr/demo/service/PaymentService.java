@@ -4,7 +4,7 @@ import org.accountpr.demo.model.*;
 import org.accountpr.demo.model.dto.PaymentDTO;
 import org.accountpr.demo.model.enums.PaymentType;
 import org.accountpr.demo.repository.PaymentRepository;
-import org.aop.annotations.LogDatasourceError;
+import ru.t1hwork.starter.aop.annotations.LogDatasourceError;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
