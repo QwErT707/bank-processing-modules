@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.accountpr.demo.model.dto.AccountDTO;
 import org.accountpr.demo.model.dto.PaymentDTO;
 import org.accountpr.demo.model.enums.PaymentType;
+import ru.t1hwork.starter.aop.annotations.LogDatasourceError;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +26,7 @@ public class CreditPaymentService {
     private final TransactionService transactionService;
 
     @Transactional
+    @LogDatasourceError(type="ERROR")
     public void createPaymentSchedule(Long accountId, BigDecimal loanAmount,
                                       BigDecimal annualInterestRate, Integer months) {
         AccountDTO account = accountService.getAccountById(accountId);

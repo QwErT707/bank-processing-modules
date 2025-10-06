@@ -1,6 +1,7 @@
 package org.clientpr.demo.service;
 
 import lombok.RequiredArgsConstructor;
+import ru.t1hwork.starter.aop.annotations.LogDatasourceError;
 import org.clientpr.demo.model.User;
 import org.clientpr.demo.model.dto.UserDTO;
 import org.clientpr.demo.repository.UserRepository;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 public class UserService {
     private final UserRepository userRepository;
 
+    @LogDatasourceError(type = "ERROR")
     public UserDTO createUser(UserDTO userDTO) {
         if (userRepository.existsByLogin(userDTO.getLogin())) {
             throw new IllegalArgumentException("Login already exists: " + userDTO.getLogin());

@@ -2,6 +2,8 @@ package org.creditpr.demo.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import ru.t1hwork.starter.aop.annotations.HttpIncomeRequestLog;
+import ru.t1hwork.starter.aop.annotations.HttpOutcomeRequestLog;
 import org.creditpr.demo.dto.PaymentRegistryDTO;
 import org.creditpr.demo.dto.ProductRegistryDTO;
 import org.springframework.beans.factory.annotation.Value;
@@ -82,6 +84,7 @@ public class ClientCreditProductConsumerService {
         }
     }
 
+    @HttpOutcomeRequestLog
     private Map<String, Object> getClientFromMC1(Long clientId) {
         try {
             String url = clientServiceUrl + "/api/clients/" + clientId;

@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  ru.t1hwork.starter.aop.config.AopAutoConfiguration

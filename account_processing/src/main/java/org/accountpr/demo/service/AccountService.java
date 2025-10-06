@@ -6,11 +6,11 @@ import org.accountpr.demo.model.Account;
 import org.accountpr.demo.model.dto.AccountDTO;
 import org.accountpr.demo.model.enums.AccountStatus;
 import org.accountpr.demo.repository.AccountRepository;
+import ru.t1hwork.starter.aop.annotations.LogDatasourceError;
+import ru.t1hwork.starter.aop.annotations.Metric;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,6 +20,8 @@ public class AccountService {
 
     private final AccountRepository accountRepository;
 
+    @LogDatasourceError(type="ERROR")
+    @Metric
     public AccountDTO createAccount(AccountDTO dto) {
         Account account = Account.builder(
                         dto.getClientId(),
@@ -34,7 +36,7 @@ public class AccountService {
         Account saved = accountRepository.save(account);
         return convertToDTO(saved);
     }
-
+@Metric
     public List<AccountDTO> getAllAccounts() {
         return accountRepository.findAll()
                 .stream()
@@ -47,14 +49,14 @@ public class AccountService {
                 .map(this::convertToDTO)
                 .orElseThrow(() -> new IllegalArgumentException("Account not found with id: " + id));
     }
-
+    @Metric(name="accounts.search.byClientId")
     public List<AccountDTO> getAccountsByClientId(Long clientId) {
         return accountRepository.findByClientId(clientId)
                 .stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
-
+    @LogDatasourceError(type="ERROR")
     public AccountDTO updateAccount(Long id, AccountDTO dto) {
         Account existing = accountRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Account not found with id: " + id));
@@ -70,7 +72,7 @@ public class AccountService {
         Account updated = accountRepository.save(existing);
         return convertToDTO(updated);
     }
-
+    @LogDatasourceError(type="WARN")
     public void deleteAccount(Long id) {
         if (!accountRepository.existsById(id)) {
             throw new IllegalArgumentException("Account not found with id: " + id);

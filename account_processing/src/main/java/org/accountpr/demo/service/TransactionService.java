@@ -5,6 +5,7 @@ import org.accountpr.demo.model.enums.TransactionStatus;
 import org.accountpr.demo.model.enums.TransactionType;
 import org.accountpr.demo.repository.TransactionRepository;
 import org.accountpr.demo.model.dto.TransactionDTO;
+import ru.t1hwork.starter.aop.annotations.LogDatasourceError;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +20,7 @@ public class TransactionService {
 
     private final TransactionRepository transactionRepository;
 
+    @LogDatasourceError(type = "ERROR")
     public TransactionDTO createTransaction(TransactionDTO dto) {
         Transaction transaction = Transaction.builder(
                 dto.getAccountId(),
@@ -69,6 +71,7 @@ public class TransactionService {
                 .collect(Collectors.toList());
     }
 
+    @LogDatasourceError(type = "ERROR")
     public TransactionDTO updateTransaction(Long id, TransactionDTO dto) {
         Transaction transaction = transactionRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Transaction not found with id: " + id));
@@ -84,6 +87,7 @@ public class TransactionService {
         return convertToDTO(updated);
     }
 
+    @LogDatasourceError(type = "ERROR")
     public void deleteTransaction(Long id) {
         if (!transactionRepository.existsById(id)) {
             throw new IllegalArgumentException("Transaction not found with id: " + id);
