@@ -5,11 +5,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.kafka.core.KafkaTemplate;
 import ru.t1hwork.starter.aop.aspect.*;
+import ru.t1hwork.starter.aop.jwt.JwtAuthenticationFilter;
 import ru.t1hwork.starter.aop.properties.AopProperties;
 import ru.t1hwork.starter.aop.repository.ErrorLogRepository;
 @Slf4j
@@ -32,7 +34,6 @@ public class AopAutoConfiguration {  public AopAutoConfiguration() {
                                                              ErrorLogRepository errorLogRepository){
     log.info("🎯🎯🎯 Creating LogDatasourceErrorAspect bean 🎯🎯🎯");
     return new LogDatasourceErrorAspect(kafkaTemplate, errorLogRepository);}
-
     @Bean
     @ConditionalOnClass(KafkaTemplate.class)
     @ConditionalOnProperty(name = "t1.aop.kafka.enabled", havingValue = "true")
@@ -50,4 +51,13 @@ public class AopAutoConfiguration {  public AopAutoConfiguration() {
     return new MetricAspect(kafkaTemplate);}
     @Bean
     @ConditionalOnProperty(name = "t1.aop.cache.enabled", havingValue = "true")
-    public CachedAspect cachedAspect(){return new CachedAspect();}}
+    public CachedAspect cachedAspect(){return new CachedAspect();}
+//@Bean
+// public FilterRegistrationBean<JwtAuthenticationFilter> jwtFilterRegistration(JwtAuthenticationFilter filter){
+// FilterRegistrationBean<JwtAuthenticationFilter>registration=new FilterRegistrationBean<>();
+// registration.setFilter(filter);
+// registration.addUrlPatterns("/api/*");
+// registration.setOrder(1);
+// return registration;
+//}
+}

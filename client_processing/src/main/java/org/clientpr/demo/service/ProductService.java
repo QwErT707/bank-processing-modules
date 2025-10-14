@@ -2,6 +2,7 @@ package org.clientpr.demo.service;
 
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import ru.t1hwork.starter.aop.annotations.LogDatasourceError;
 import org.clientpr.demo.model.Product;
 import org.clientpr.demo.model.dto.ProductDTO;
@@ -17,11 +18,17 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class ProductService {
     private final ProductRepository productRepository;
-
     @LogDatasourceError(type = "ERROR")
     public ProductDTO createProduct(ProductDTO productDTO) {
+        log.info("🎯 Starting product creation: {}", productDTO.getName());
+
+        if (productRepository.existsByProductId(productDTO.getProductId())) {
+            log.error("❌ Product with productId already exists: {}", productDTO.getProductId());
+            throw new IllegalArgumentException("Product with this productId already exists: " + productDTO.getProductId());
+        }
         Product product = Product.builder(
                 productDTO.getName(),
                productDTO.getKey(),
@@ -29,13 +36,12 @@ public class ProductService {
                 ).build();
 
         Product savedProduct = productRepository.save(product);
+        log.info("✅ Product created successfully with ID: {}", savedProduct.getId());
         String generatedProductId = savedProduct.getKey().name() + savedProduct.getId();
         savedProduct.setProductId(generatedProductId);
-
         Product finalProduct = productRepository.save(savedProduct);
         return convertToDTO(finalProduct);
     }
-
     public List<ProductDTO> getAllProducts() {
         return productRepository.findAll()
                 .stream()
@@ -48,14 +54,7 @@ public class ProductService {
                 .map(this::convertToDTO)
                 .orElseThrow(() -> new IllegalArgumentException("Product not found with id: " + id));
     }
-
-//    public ProductDTO getProductByProductId(String productId) {
-//        return productRepository.findByProductId(productId)
-//                .map(this::convertToDTO)
-//                .orElseThrow(() -> new IllegalArgumentException("Product not found with productId: " + productId));
-//    }
-
-    public List<ProductDTO> getProductsByKey(ProductKey key) {
+        public List<ProductDTO> getProductsByKey(ProductKey key) {
         return productRepository.findByKey(key)
                 .stream()
                 .map(this::convertToDTO)

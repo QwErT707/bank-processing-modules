@@ -2,6 +2,8 @@ package org.clientpr.demo.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.clientpr.demo.service.RoleService;
+import org.springframework.http.HttpStatus;
 import ru.t1hwork.starter.aop.annotations.HttpIncomeRequestLog;
 import org.clientpr.demo.model.dto.ClientDTO;
 import org.clientpr.demo.model.enums.DocumentType;
@@ -17,6 +19,7 @@ import java.util.List;
 public class ClientController {
 
     private final ClientService clientService;
+    private final RoleService roleService;
 
     @PostMapping
     @HttpIncomeRequestLog
@@ -24,7 +27,35 @@ public class ClientController {
         ClientDTO createdClient = clientService.createClient(clientDTO);
         return ResponseEntity.ok(createdClient);
     }
+    @PostMapping("/{id}/block")
+    public ResponseEntity<?> blockClient(@PathVariable Long id,
+                                         @RequestHeader("X-User-Id") Long userId,
+                                         @RequestParam(required = false) String reason) {
+        if (!roleService.hasGrandEmployeeOrMasterRole(userId)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body("Only users with MASTER or GRAND_EMPLOYEE role can block clients");
+        }
 
+        try {
+            ClientDTO blockedClient = clientService.blockClient(id, reason);
+            return ResponseEntity.ok(blockedClient);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+    @PostMapping("/{id}/unblock")
+    public ResponseEntity<?> unblockClient(@PathVariable Long id,
+                                           @RequestHeader("X-User-Id") Long userId) {
+        if (!roleService.hasGrandEmployeeOrMasterRole(userId)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body("Only users with MASTER or GRAND_EMPLOYEE role can unblock clients");
+        }        try {
+            ClientDTO unblockedClient = clientService.unblockClient(id);
+            return ResponseEntity.ok(unblockedClient);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
     @GetMapping
     @HttpIncomeRequestLog
     public ResponseEntity<List<ClientDTO>> getAllClients() {

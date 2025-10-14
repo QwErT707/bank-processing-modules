@@ -119,6 +119,7 @@ services:
       - DB_USERNAME=postgres
       - DB_PASSWORD=password
       - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - JWT_SECRET=our-super-secret-key-for-jwt-tokens-2024
     depends_on:
       postgres-client:
         condition: service_healthy
@@ -143,6 +144,7 @@ services:
       - DB_USERNAME=postgres
       - DB_PASSWORD=password
       - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+        JWT_SECRET=our-super-secret-key-for-jwt-tokens-2024
     depends_on:
       postgres-account:
         condition: service_healthy
@@ -170,6 +172,9 @@ services:
       - CLIENT_SERVICE_URL=http://client-service:8080
       - CREDIT_LIMIT=1000000
       - MAX_DELAYS_ALLOWED=0
+      - JWT_SECRET=our-super-secret-key-for-jwt-tokens-2024
+      - AUTH_SERVICE_URL=http://auth-service:8080
+      - SERVICE_CREDENTIALS=credit-service:credit-secret-123
     depends_on:
       postgres-credit:
         condition: service_healthy
@@ -177,6 +182,24 @@ services:
         condition: service_healthy
       client-service:
         condition: service_started
+      auth-service:
+        condition: service_started
+    restart: unless-stopped
+  auth-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        JAR_FILE: auth-service/target/auth-service-*.jar
+    container_name: auth-service
+    ports:
+      - "8084:8080"
+    environment:
+      - SERVER_PORT=8080
+      - JWT_SECRET=our-super-secret-key-for-jwt-tokens-2024
+    depends_on:
+      kafka:
+        condition: service_healthy
     restart: unless-stopped
 
 volumes:

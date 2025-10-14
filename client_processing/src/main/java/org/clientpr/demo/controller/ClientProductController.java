@@ -2,6 +2,7 @@ package org.clientpr.demo.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.clientpr.demo.service.ClientAccessService;
 import ru.t1hwork.starter.aop.annotations.HttpIncomeRequestLog;
 import org.clientpr.demo.model.dto.ClientProductDTO;
 import org.clientpr.demo.model.enums.ProductStatus;
@@ -17,9 +18,11 @@ import java.util.List;
 public class ClientProductController {
 
     private final ClientProductService clientProductService;
+    private final ClientAccessService clientAccessService;
     @PostMapping
     @HttpIncomeRequestLog
-    public ResponseEntity<ClientProductDTO> createClientProduct(@Valid @RequestBody ClientProductDTO clientProductDTO) {
+    public ResponseEntity<ClientProductDTO> createClientProduct(@Valid @RequestBody ClientProductDTO clientProductDTO,     @RequestHeader("X-User-Id") Long userId) {
+        clientAccessService.checkClientAccess(clientProductDTO.getClientId());
         ClientProductDTO createdClientProduct = clientProductService.createClientProduct(clientProductDTO);
         return ResponseEntity.ok(createdClientProduct);
     }
