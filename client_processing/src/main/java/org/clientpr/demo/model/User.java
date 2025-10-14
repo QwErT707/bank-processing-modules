@@ -22,7 +22,9 @@ public class User {
 
     @Column(unique = true, nullable = false)
     private String email;
+    @Column(name = "user_role", nullable = false)
+    private String userRole;
     public static UserBuilder builder(String login, String password, String email){
-        return hiddenBuilder().login(login).password(password).email(email);
+        return hiddenBuilder().login(login).password(password).email(email).userRole("USER");
     }
 }

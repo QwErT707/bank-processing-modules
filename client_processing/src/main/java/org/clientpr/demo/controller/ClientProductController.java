@@ -2,18 +2,15 @@ package org.clientpr.demo.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.clientpr.demo.model.dto.CardCreationRequestDTO;
+import org.clientpr.demo.service.ClientAccessService;
+import ru.t1hwork.starter.aop.annotations.HttpIncomeRequestLog;
 import org.clientpr.demo.model.dto.ClientProductDTO;
 import org.clientpr.demo.model.enums.ProductStatus;
-import org.clientpr.demo.repository.ClientRepository;
 import org.clientpr.demo.service.ClientProductService;
-import org.clientpr.demo.service.KafkaProducerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/client-products")
@@ -21,8 +18,11 @@ import java.util.UUID;
 public class ClientProductController {
 
     private final ClientProductService clientProductService;
+    private final ClientAccessService clientAccessService;
     @PostMapping
-    public ResponseEntity<ClientProductDTO> createClientProduct(@Valid @RequestBody ClientProductDTO clientProductDTO) {
+    @HttpIncomeRequestLog
+    public ResponseEntity<ClientProductDTO> createClientProduct(@Valid @RequestBody ClientProductDTO clientProductDTO,     @RequestHeader("X-User-Id") Long userId) {
+        clientAccessService.checkClientAccess(clientProductDTO.getClientId());
         ClientProductDTO createdClientProduct = clientProductService.createClientProduct(clientProductDTO);
         return ResponseEntity.ok(createdClientProduct);
     }

@@ -2,6 +2,7 @@ package org.creditpr.demo.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import ru.t1hwork.starter.aop.annotations.HttpIncomeRequestLog;
 import org.creditpr.demo.dto.PaymentRegistryDTO;
 import org.creditpr.demo.service.PaymentRegistryService;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ public class PaymentRegistryController {
     private final PaymentRegistryService service;
 
     @PostMapping
+    @HttpIncomeRequestLog
     public ResponseEntity<PaymentRegistryDTO> createPaymentRegistry(
             @Valid @RequestBody PaymentRegistryDTO dto) {
         PaymentRegistryDTO created = service.createPaymentRegistry(dto);
@@ -23,6 +25,7 @@ public class PaymentRegistryController {
     }
 
     @GetMapping("/{id}")
+    @HttpIncomeRequestLog
     public ResponseEntity<PaymentRegistryDTO> getPaymentRegistryById(@PathVariable Long id) {
         return service.getPaymentRegistryById(id)
                 .map(ResponseEntity::ok)
@@ -30,22 +33,26 @@ public class PaymentRegistryController {
     }
 
     @GetMapping
+    @HttpIncomeRequestLog
     public ResponseEntity<List<PaymentRegistryDTO>> getAllPaymentRegistries() {
         return ResponseEntity.ok(service.getAllPaymentRegistries());
     }
 
     @GetMapping("/product-registry/{productRegistryId}")
+    @HttpIncomeRequestLog
     public ResponseEntity<List<PaymentRegistryDTO>> getPaymentsByProductRegistryId(
             @PathVariable Long productRegistryId) {
         return ResponseEntity.ok(service.getPaymentRegistriesByProductRegistryId(productRegistryId));
     }
 
     @GetMapping("/expired")
+    @HttpIncomeRequestLog
     public ResponseEntity<List<PaymentRegistryDTO>> getExpiredPayments() {
         return ResponseEntity.ok(service.getExpiredPayments());
     }
 
     @PutMapping("/{id}")
+    @HttpIncomeRequestLog
     public ResponseEntity<PaymentRegistryDTO> updatePaymentRegistry(
             @PathVariable Long id,
             @Valid @RequestBody PaymentRegistryDTO dto) {
@@ -58,6 +65,7 @@ public class PaymentRegistryController {
     }
 
     @PatchMapping("/{id}/expired")
+    @HttpIncomeRequestLog
     public ResponseEntity<PaymentRegistryDTO> updatePaymentExpiredStatus(
             @PathVariable Long id,
             @RequestParam Boolean expired) {
@@ -70,6 +78,7 @@ public class PaymentRegistryController {
     }
 
     @DeleteMapping("/{id}")
+    @HttpIncomeRequestLog
     public ResponseEntity<Void> deletePaymentRegistry(@PathVariable Long id) {
         try {
             service.deletePaymentRegistry(id);

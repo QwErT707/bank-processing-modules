@@ -2,6 +2,7 @@ package org.creditpr.demo.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import ru.t1hwork.starter.aop.annotations.HttpIncomeRequestLog;
 import org.creditpr.demo.dto.ProductRegistryDTO;
 import org.creditpr.demo.service.ProductRegistryService;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ public class ProductRegistryController {
     private final ProductRegistryService service;
 
     @PostMapping
+    @HttpIncomeRequestLog
     public ResponseEntity<ProductRegistryDTO> createProductRegistry(
             @Valid @RequestBody ProductRegistryDTO dto) {
         ProductRegistryDTO created = service.createProductRegistry(dto);

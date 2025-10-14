@@ -1,6 +1,7 @@
 package org.clientpr.demo.model.dto;
 
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,5 +27,7 @@ public class UserDTO {
     @Email
     @NotBlank
     private String email;
-
+    @NotBlank(message = "User role is required")
+    @Pattern(regexp = "USER|GRAND_EMPLOYEE|MASTER", message = "User role must be USER, GRAND_EMPLOYEE or MASTER")
+    private String userRole;
 }

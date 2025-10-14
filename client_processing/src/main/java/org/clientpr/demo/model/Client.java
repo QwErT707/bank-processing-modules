@@ -37,9 +37,14 @@ public class Client {
    private String documentPrefix;
     @Column(name = "document_suffix")
     private String documentSuffix;
+    @Column(name = "client_role", nullable = false)
+    private String clientRole;
     public static ClientBuilder builder(String clientId, Long userId, String middleName, String firstName, String lastName,
                                         LocalDate dateOfBirth, DocumentType documentType, String documentId,String documentPrefix, String documentSuffix){
         return hiddenBuilder().clientId(clientId).userId(userId).firstName(firstName)
                 .middleName(middleName).lastName(lastName).dateOfBirth(dateOfBirth)
-                .documentType(documentType).documentId(documentId).documentPrefix(documentPrefix).documentSuffix(documentSuffix);}}
+                .documentType(documentType).documentId(documentId)
+                .documentPrefix(documentPrefix)
+                .documentSuffix(documentSuffix)
+                .clientRole("CURRENT_CLIENT");}}
 

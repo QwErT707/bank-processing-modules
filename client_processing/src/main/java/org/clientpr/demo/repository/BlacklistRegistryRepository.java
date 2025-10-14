@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 public interface BlacklistRegistryRepository extends JpaRepository<BlacklistRegistry, Long> {
-    Optional<BlacklistRegistry> findByDocumentTypeAndDocumentId(DocumentType documentType, String documentId);
+    List<BlacklistRegistry> findByDocumentTypeAndDocumentId(DocumentType documentType, String documentId);
 
     List<BlacklistRegistry> findByDocumentType(DocumentType documentType);
 

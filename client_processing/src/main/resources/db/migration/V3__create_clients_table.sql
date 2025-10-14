@@ -10,7 +10,7 @@ CREATE TABLE clients (
     document_id VARCHAR(20) NOT NULL,
     document_prefix VARCHAR(10),
     document_suffix VARCHAR(10),
-
+    client_role VARCHAR(20) NOT NULL DEFAULT 'CURRENT_CLIENT',
     CONSTRAINT fk_clients_user_id FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 

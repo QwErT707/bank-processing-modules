@@ -2,13 +2,12 @@ package org.accountpr.demo.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.accountpr.demo.model.Account;
-import org.accountpr.demo.model.Card;
 import org.accountpr.demo.model.dto.AccountDTO;
 import org.accountpr.demo.model.dto.CardDTO;
 import org.accountpr.demo.model.dto.PaymentDTO;
 import org.accountpr.demo.model.dto.TransactionDTO;
 import org.accountpr.demo.model.enums.*;
+import ru.t1hwork.starter.aop.annotations.LogDatasourceError;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +27,7 @@ public class ClientProductConsumerService {
     private final TransactionMonitoringService monitoringService;
     private final CreditPaymentService creditPaymentService;
     @KafkaListener(topics = "client_products", groupId = "account-service")
+    @LogDatasourceError(type="ERROR")
     public void consumeClientProductMessage(Map<String, Object> message){
         log.info("Received client product message: {}", message);
         try {
@@ -104,6 +104,7 @@ public class ClientProductConsumerService {
             log.error("Error processing transaction: {}", e.getMessage(), e);
         }
     }
+    @LogDatasourceError(type="ERROR")
     private void updateTransactionStatus(Long transactionId, TransactionStatus status) {
         try {
             TransactionDTO existingTransaction = transactionService.getTransactionById(transactionId);

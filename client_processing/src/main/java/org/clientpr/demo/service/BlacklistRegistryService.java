@@ -42,7 +42,12 @@ public class BlacklistRegistryService {
     public boolean isBlacklisted(DocumentType documentType, String documentId) {
         return blacklistRegistryRepository.existsByDocumentTypeAndDocumentId(documentType, documentId);
     }
-
+    public List<BlacklistRegistryDTO> findByDocumentTypeAndDocumentId(DocumentType documentType, String documentId) {
+        return blacklistRegistryRepository.findByDocumentTypeAndDocumentId(documentType, documentId)
+                .stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
     public List<BlacklistRegistryDTO> getAllBlacklisted() {
         return blacklistRegistryRepository.findAll()
                 .stream()

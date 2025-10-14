@@ -2,6 +2,8 @@ package org.creditpr.demo.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import ru.t1hwork.starter.aop.annotations.HttpIncomeRequestLog;
+import ru.t1hwork.starter.aop.annotations.HttpOutcomeRequestLog;
 import org.creditpr.demo.dto.PaymentRegistryDTO;
 import org.creditpr.demo.dto.ProductRegistryDTO;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,7 +37,7 @@ public class ClientCreditProductConsumerService {
 
     @KafkaListener(topics = "client_credit_products", groupId = "credit-service")
     public void consumeClientCreditProductMessage(Map<String, Object> message) {
-        log.info("Received client credit product message: {}", message);
+        log.info("📨 Received client credit product message: {}", message);
 
         try {
             Long clientId = Long.valueOf(message.get("clientId").toString());
@@ -44,12 +46,12 @@ public class ClientCreditProductConsumerService {
             BigDecimal interestRate = new BigDecimal(message.get("interestRate").toString());
             Integer monthCount = Integer.valueOf(message.get("monthCount").toString());
             Long accountId = Long.valueOf(message.get("accountId").toString());
-
+            log.info("🔍 Fetching client {} from client-service", clientId);
             Map<String, Object> client = getClientFromMC1(clientId);
             if (client == null) {
-                log.error("Client {} not found in MC-1", clientId);
+                log.error("❌Client {} not found in MC-1", clientId);
                 return;
-            }
+            } log.info("✅ Client found: {} {}", client.get("firstName"), client.get("lastName"));
             String firstName=(String) client.get("firstName");
             String lastName=(String) client.get("lastName");
 
@@ -75,13 +77,14 @@ public class ClientCreditProductConsumerService {
             ProductRegistryDTO createdProduct = productRegistryService.createProductRegistry(productRegistryDTO);
             createPaymentSchedule(createdProduct, amount, interestRate, monthCount);
 
-            log.info("Credit product created successfully: {}", createdProduct.getId());
+            log.info("✅ Credit product created successfully: {}", createdProduct.getId());
 
         } catch (Exception e) {
-            log.error("Error processing client credit product: {}", e.getMessage(), e);
+            log.error("❌Error processing client credit product: {}", e.getMessage(), e);
         }
     }
 
+    @HttpOutcomeRequestLog
     private Map<String, Object> getClientFromMC1(Long clientId) {
         try {
             String url = clientServiceUrl + "/api/clients/" + clientId;

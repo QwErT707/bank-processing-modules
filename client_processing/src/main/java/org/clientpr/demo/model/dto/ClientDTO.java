@@ -41,5 +41,9 @@ public class ClientDTO {
     @Size(max = 10)
     private String documentPrefix;
     @Size(max = 10)
-    private String documentSuffix;    }
+    private String documentSuffix;
+    @NotBlank(message = "Client role is required")
+    @Pattern(regexp = "CURRENT_CLIENT|BLOCKED_CLIENT", message = "Client role must be CURRENT_CLIENT or BLOCKED_CLIENT")
+    private String clientRole;
+}
 

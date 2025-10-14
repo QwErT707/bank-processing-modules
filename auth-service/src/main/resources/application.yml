@@ -1,0 +1,8 @@
+server:
+  port: ${SERVER_PORT:8080}
+spring:
+  application:
+    name: auth-service
+jwt:
+  secret: ${JWT_SECRET:default-secret-key-change-in-production}
+  expiration-hours: 24
