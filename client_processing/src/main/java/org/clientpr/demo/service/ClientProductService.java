@@ -1,6 +1,7 @@
 package org.clientpr.demo.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import ru.t1hwork.starter.aop.annotations.LogDatasourceError;
 import org.clientpr.demo.model.ClientProduct;
 import org.clientpr.demo.model.dto.ClientProductDTO;
@@ -31,13 +32,12 @@ public class ClientProductService {
                 clientProductDTO.getClientId(),
                 clientProductDTO.getProductId(),
                 clientProductDTO.getOpenDate() != null ?
-                        clientProductDTO.getOpenDate() : LocalDateTime.now(),
+                clientProductDTO.getOpenDate() : LocalDateTime.now(),
                 clientProductDTO.getCloseDate(),
                clientProductDTO.getStatus()
                 ).build();
         ClientProduct savedClientProduct = clientProductRepository.save(clientProduct);
- kafkaProducerService.sendToClientProducts(savedClientProduct, "CREATE");
-
+        kafkaProducerService.sendToClientProducts(savedClientProduct, "CREATE");
         return convertToDTO(savedClientProduct);
     }
 

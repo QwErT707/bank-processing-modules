@@ -23,5 +23,11 @@
         <version>0.0.1-SNAPSHOT</version>
        <!-- <scope>system</scope>
         <systemPath>${project.basedir}/../aop_annotations/target/aop_annotations-0.0.1-SNAPSHOT.jar</systemPath>-->
-    </dependency></dependencies>
+    </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 </project>

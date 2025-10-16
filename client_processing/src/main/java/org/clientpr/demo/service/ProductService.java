@@ -3,6 +3,7 @@ package org.clientpr.demo.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import ru.t1hwork.starter.aop.annotations.LogDatasourceError;
 import org.clientpr.demo.model.Product;
 import org.clientpr.demo.model.dto.ProductDTO;
@@ -21,6 +22,8 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ProductService {
     private final ProductRepository productRepository;
+    @Lazy
+    private final ProductMetricsService productMetricsService;
     @LogDatasourceError(type = "ERROR")
     public ProductDTO createProduct(ProductDTO productDTO) {
         log.info("🎯 Starting product creation: {}", productDTO.getName());
@@ -40,7 +43,9 @@ public class ProductService {
         String generatedProductId = savedProduct.getKey().name() + savedProduct.getId();
         savedProduct.setProductId(generatedProductId);
         Product finalProduct = productRepository.save(savedProduct);
-        return convertToDTO(finalProduct);
+       productMetricsService.recordProductCreated(productDTO.getKey());
+        log.info("✅ Product created successfully with ID: {}", finalProduct.getId());
+       return convertToDTO(finalProduct);
     }
     public List<ProductDTO> getAllProducts() {
         return productRepository.findAll()
